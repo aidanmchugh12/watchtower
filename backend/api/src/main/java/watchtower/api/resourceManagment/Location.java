@@ -14,13 +14,15 @@ public abstract class Location {
 
     public void arriveUnit(Unit u) {
         units.add(u);
+        u.setCurrentLocation(this);
         u.sendTo(null);
     }
 
-    public Unit releaseUnit(String type) {
+    public Unit releaseUnit(String id) {
         for (int i = 0; i < units.size(); i++) {
             Unit u = units.get(i);
-            if (u.getType().equals(type)) {
+            if (u.getId().equals(id)) {
+                u.setCurrentLocation(null);
                 return units.remove(i);
             }
         }

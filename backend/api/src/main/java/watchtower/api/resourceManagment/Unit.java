@@ -1,11 +1,12 @@
 package watchtower.api.resourceManagment;
 
-public abstract class Unit {
+public class Unit {
     private double lat;
     private double lon;
     private String id;
     private Station home;
     private Location dest;
+    private Location currentLocation;
 
     public Unit(String type, Station home, int id) {
         if (type.equals("f") || type.equals("p") || type.equals("a")) {
@@ -16,6 +17,7 @@ public abstract class Unit {
         this.lat = home.lat;
         this.lat = home.lon;
         this.dest = home;
+        this.currentLocation = home;
     }
 
     public boolean tickAndCheckIfArrived() {
@@ -58,8 +60,16 @@ public abstract class Unit {
         return home;
     }
 
+    public Location getCurrentLocation() {
+        return currentLocation;
+    }
+
     public void sendTo(Location l) {
         dest = l;
+    }
+
+    public void setCurrentLocation(Location l) {
+        currentLocation = l;
     }
 
     @Override

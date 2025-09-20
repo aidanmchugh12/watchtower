@@ -45,7 +45,10 @@ public class Scene {
     // for a list of units allocated by the decision algorithm
     public void allocateFromAlgorithm(List<Unit> units, Disaster dest) {
         for (Unit u : units) {
-            // how do we make sure units aren't still listed as at station/disaster?
+            if (u.getCurrentLocation() != null) {
+                u.getCurrentLocation().releaseUnit(u.getId());
+                movingUnits.add(u);
+            }
             u.sendTo(dest);
         }
     }
@@ -60,7 +63,8 @@ public class Scene {
                         return;
                     }
                     // pop from the list and send away
-                    Unit u = units.removeLast();
+                    Unit u = units.getLast();
+                    s.releaseUnit(u.getId());
                     u.sendTo(dest);
                     movingUnits.add(u);
                 }
@@ -81,9 +85,9 @@ public class Scene {
         for (Station s : stations) {
             for (Unit u : s.getAllUnits()) {
                 if (u.getId().equals(unitId)) {
-                    u.sendTo(dest);
-                    movingUnits.add(u);
                     s.releaseUnit(unitId);
+                    movingUnits.add(u);
+                    u.sendTo(dest);
                     return;
                 }
             }
@@ -91,8 +95,8 @@ public class Scene {
         for (Disaster d : disasters) {
             for (Unit u : d.getAllUnits()) {
                 if (u.getId().equals(unitId)) {
-                    movingUnits.add(u);
                     d.releaseUnit(unitId);
+                    movingUnits.add(u);
                     u.sendTo(dest);
                     return;
                 }
