@@ -6,6 +6,11 @@ public abstract class Location {
     private List<Unit> units;
     public double lat;
     public double lon;
+    public String id;
+
+    public String getId() {
+        return id;
+    }
 
     public void arriveUnit(Unit u) {
         units.add(u);
@@ -35,5 +40,15 @@ public abstract class Location {
             }
         }
         return count;
+    }
+
+    public boolean equals(Object other) {
+        if (other instanceof Location) {
+            Location otherLocation = (Location) other;
+            if (id.equals(otherLocation.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

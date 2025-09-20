@@ -1,6 +1,7 @@
 package watchtower.api.resourceManagment;
 
 import java.util.*;
+import java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy;
 
 // Singleton class, there will only ever be a single instance
 public class Scene {
@@ -41,9 +42,62 @@ public class Scene {
         return "disaster_id";
     }
 
-    public int allocate(String sourceId, String destinationId, String type, int quantity) {
-        // find the node for the sourceId.
-        return -1;
+    // for a list of units allocated by the decision algorithm
+    public void allocateFromAlgorithm(List<Unit> units, Disaster dest) {
+        for (Unit u : units) {
+            // how do we make sure units aren't still listed as at station/disaster?
+            u.sendTo(dest);
+        }
+    }
+
+    // for a specified number of units allocated by user from a specific station
+    public void allocateFromStation(String stationId, int num, Disaster dest) {
+        for (Station s : stations) {
+            if (s.getId().equals(stationId)) {
+                List<Unit> units = s.getAllUnits();
+                for (int i = 0; i < num; i++) {
+                    if (units.size() == 0) {
+                        return;
+                    }
+                    // pop from the list and send away
+                    Unit u = units.removeLast();
+                    u.sendTo(dest);
+                    movingUnits.add(u);
+                }
+            }
+        }
+    }
+
+    public void allocateFromMoving(String unitId, Disaster dest) {
+        // for an individual (presumably moving) unit allocated by user
+        for (Unit u : movingUnits) {
+            if (u.getId().equals(unitId)) {
+                u.sendTo(dest);
+                return;
+            }
+        }
+
+        // backups for if the unit arrived just before the user clicks
+        for (Station s : stations) {
+            for (Unit u : s.getAllUnits()) {
+                if (u.getId().equals(unitId)) {
+                    u.sendTo(dest);
+                    movingUnits.add(u);
+                    s.releaseUnit(unitId);
+                    return;
+                }
+            }
+        }
+        for (Disaster d : disasters) {
+            for (Unit u : d.getAllUnits()) {
+                if (u.getId().equals(unitId)) {
+                    movingUnits.add(u);
+                    d.releaseUnit(unitId);
+                    u.sendTo(dest);
+                    return;
+                }
+            }
+        }
     }
 
     public List<Station> getAllStations() {
