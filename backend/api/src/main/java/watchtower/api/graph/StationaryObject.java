@@ -1,4 +1,4 @@
-package graph;
+package watchtower.api.graph;
 
 import java.util.ArrayList;
 
