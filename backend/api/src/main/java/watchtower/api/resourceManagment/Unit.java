@@ -55,7 +55,7 @@ public abstract class Unit {
     }
 
     public Location getHome() {
-        
+        return home;
     }
 
     public void sendTo(Location l) {

@@ -50,17 +50,15 @@ public class Scene {
         return stations;
     }
 
-    public List<Unit> getAllStationaryUnits(char type) {
+    public List<Unit> getAllStationaryUnits() {
         List<Station> allStations = getAllStations();
 
         List<Unit> allStationaryUnits = new ArrayList<Unit>();
 
-        // Loop through all stations and their units to grab appropriate units
+        // Loop through all stations and th
         for (Station station : allStations) {
             for (Unit unit : station.getAllUnits()) {
-                if (unit.getId().charAt(0) == type) {
-                    allStationaryUnits.add(unit);
-                }
+                allStationaryUnits.add(unit);
             }
         }
 

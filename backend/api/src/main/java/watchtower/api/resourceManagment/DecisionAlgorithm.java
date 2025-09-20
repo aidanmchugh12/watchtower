@@ -11,19 +11,34 @@ public class DecisionAlgorithm {
         
         Scene scene = Scene.getInstance();
 
-        // TODO: Grab most relevant units for a disaster
+        // MAKE A LIST OF ALL FREE UNITS
+        // Grab all stationary units
+        List<Unit> allFreeUnits = scene.getAllStationaryUnits();
 
-        char unitType = 'P';
-        // Grab sorted (closest to farthest) units from stations
-        List<Unit> sortedStationaryUnits = scene.getAllStationaryUnits(unitType);
-        Collections.sort(sortedStationaryUnits, 
-            (a, b) -> Double.compare(Util.calculateDistance(a.getLat(), a.getLon(), disaster.lat, disaster.lon), 
-                                    Util.calculateDistance(b.getLat(), b.getLon(), disaster.lat, disaster.lon)));
+        // Grab all in route & returning units
+        List<Unit> movingUnits = scene.getAllMovingUnits();
+        List<Unit> returningUnits = new ArrayList<Unit>();
+        for(Unit unit : movingUnits) {
+            // If desitation & home values are the same, the unit is returning
+            if(unit.getDest().lat == unit.getHome().lat && unit.getDest().lon == unit.getHome().lon) {
+                returningUnits.add(unit);
+            }
+        }
+        allFreeUnits.addAll(returningUnits); // ALL FREE UNITS (STATIONARY & RETURNING)
 
 
-        List<Unit> unitsToUse = new ArrayList<Unit>();
+
+        // // Establish reccomended units for disaster
+        // int reccomendedUnits = 0;
+        // String reccomendedUnitType = "";
 
 
+        // List<Unit> unitsToUse = new ArrayList<Unit>(); // RETURN ARRAYLIST
+
+        // // First: prefer returning units if they're closer than the nearest station
+        // for(Unit unit : returningUnits) {
+            
+        // }
 
 
         return unitsToUse;

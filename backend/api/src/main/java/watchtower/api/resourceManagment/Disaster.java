@@ -30,4 +30,8 @@ public class Disaster extends Location {
         return severity;
     }
 
+    public String getType() {
+        return type;
+    }
+
 }

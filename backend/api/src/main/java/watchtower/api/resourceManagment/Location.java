@@ -19,6 +19,8 @@ public abstract class Location {
                 return units.remove(i);
             }
         }
+
+        return null;
     }
 
     public List<Unit> getAllUnits() {
