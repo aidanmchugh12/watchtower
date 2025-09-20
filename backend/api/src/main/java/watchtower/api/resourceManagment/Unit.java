@@ -38,6 +38,14 @@ public abstract class Unit {
         return id.substring(0, 1);
     }
 
+    public double getLat() {
+        return this.lat;
+    }
+
+    public double getLon() {
+        return this.lon;
+    }
+
     public Location getDest() {
         return dest;
     }

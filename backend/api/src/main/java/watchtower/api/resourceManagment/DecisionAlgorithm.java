@@ -17,7 +17,11 @@ public class DecisionAlgorithm {
         // Grab sorted (closest to farthest) units from stations
         List<Unit> sortedStationaryUnits = scene.getAllStationaryUnits(unitType);
 
+        Collections.sort(sortedStationaryUnits, (a, b) -> Double.compare(Util.calculateDistance(a), util.calculateDistance(b)));
+
         List<Unit> unitsToUse = new ArrayList<Unit>();
+
+
 
 
         return unitsToUse;
