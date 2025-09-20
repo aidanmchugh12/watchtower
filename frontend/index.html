@@ -5,117 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <title>Watchtower</title>
-
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;  
-        }
-        #map {
-            height: 100%;
-            width: 100%;
-        }
-
-         .map-box {
-            position: absolute; 
-            background-color: rgba(255, 255, 255, 0.82); 
-            height: 250px;
-            width: 250px;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            z-index: 1000;    
-        }
-       
-        #capacity-bar {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%); 
-            padding: 5;
-            border-radius: 8px;
-            text-align: center;
-            z-index: 1000;
-            width: 250px;
-        }
-
-        #capacity-bar .bar {
-            background: #ddd;
-            height: 20px;
-            border-radius: 5px;
-            margin-top: 0px;
-            width: 100%;
-        }
-
-        #capacity-bar .bar .fill {
-            background: green;
-            height: 100%;
-            border-radius: 5px;
-        }
-
-
-        #time-slider {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%); 
-            background: rgba(255,255,255,0.9);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            text-align: center;
-            z-index: 1000;
-            width: 300px;
-        }
-
-        #time-slider input[type=range] {
-            width: 100%;
-        }
-
-        #time-slider p {
-            margin: 5px 0 0 0;
-            font-size: 0.9rem;
-        }
-
-       
-        .top-left {
-            top: 5px;
-            left: 10px;
-        }
-
-        .top-right {
-            top: 5px;
-            right: 10px;
-        }
-
-        .centered {
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
      <div id="map"></div>
 
     <div class="map-box top-left">
-    <p class="centered"><strong>Resources</strong></p>
-    <p>Police: 10</p>
+        <p class="centered"><strong>Resources</strong></p>
+        <p>Police Cars: 10</p>
+          <div class="progress-bar">
+            <div class="progress-section section-1">5</div>
+            <div class="progress-section section-2">3</div>
+            <div class="progress-section section-3">2</div>
+          </div>
+        <p>Fire Trucks: 10</p>
+          <div class="progress-bar">
+              <div class="progress-section section-1">2</div>
+              <div class="progress-section section-2">7</div>
+              <div class="progress-section section-3">1</div>
+          </div>
+        <p>Ambulances: 10</p>
+          <div class="progress-bar">
+            <div class="progress-section section-1">2</div>
+            <div class="progress-section section-2">6</div>
+            <div class="progress-section section-3">2</div>
+          </div>
     </div>
 
     <div class="map-box top-right">
-    <p><strong>Live Log</strong></p>
+        <p class="centered"><strong>Live Log</strong></p>
+        <button id = "open-button"> Open</button>
     </div>
 
     <div id="capacity-bar">
-    <div class="bar">
-        <div class="fill" style="width: 75%;">Capacity: 75%</div>
-    </div>
+        <div class="bar">
+            <div class="fill" style="width: 75%;">Capacity: 75%</div>
+        </div>
     </div>
 
+
+    <div class="modal-container">
+        <div class="modal">
+            <h1>Decision</h1>
+            <p>Our decision algorithm recommends you send <strong>3 Police Cars</strong> and <strong>2 Fire Trucks</strong>.</p>
+            <br><button class="reject-button"><strong>No</strong></button>
+            <button class="accept-button"><strong>Yes</strong></button>
+        </div>
+    </div>
+
+
+  <div class="time-controls">
+    <button class="control-button pause-button" id="pause-button" title="Pause">⏸</button>
 
     <div id="time-slider">
-    <input type="range" min="0" max="24" value="12" step="1">
-    <p id="time-label">Time</p>
+      <input type="range" min="0" max="24" value="12" step="1">
+      <p id="time-label">Time</p>
     </div>
+
+    <button class="control-button resume-button" id="resume-button" title="Resume">▶</button>
+  </div>
+
+
 
      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
      <script src="main.js"></script>
