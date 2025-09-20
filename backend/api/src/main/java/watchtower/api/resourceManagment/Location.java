@@ -4,8 +4,8 @@ import java.util.List;
 
 public abstract class Location {
     private List<Unit> units;
-    public final double lat;
-    public final double lon;
+    public double lat;
+    public double lon;
 
     public void arriveUnit(Unit u) {
         units.add(u);
