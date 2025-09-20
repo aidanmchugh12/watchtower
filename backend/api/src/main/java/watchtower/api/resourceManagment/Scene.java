@@ -41,9 +41,11 @@ public class Scene {
         return "disaster_id";
     }
 
-    public int allocate(String sourceId, String destinationId, String type, int quantity) {
-        // find the node for the sourceId.
-        return -1;
+    public void allocate(List<Unit> units, Disaster dest) {
+        // for a list of units allocated by the decision algorithm
+        for (Unit u : units) {
+            u.sendTo(dest);
+        }
     }
 
     public List<Station> getAllStations() {
