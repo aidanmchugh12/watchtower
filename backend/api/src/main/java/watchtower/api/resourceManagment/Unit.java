@@ -1,29 +1,49 @@
 package watchtower.api.resourceManagment;
 
 public abstract class Unit {
-    private double minutesPerStep = 1;
-    private double progress;
-    private double latPos;
-    private double longPos;
+    private double lat;
+    private double lon;
     private String id;
+    private Station home;
+    private Location dest;
 
-    // how far along? min=0, max=distance
-    public double getProgress() {
-        return progress;
-    }
-
-    // move by a set amount, then return if it arrived
-    // TODO: UPDATE LAT LONG INSTEAD
-    public boolean move(double distanceToDest) {
-        progress += minutesPerStep;
-        if (progress >= distanceToDest) {
-            return true;
+    public Unit(String type, Station home, int id) {
+        if (type.equals("f") || type.equals("p") || type.equals("a")) {
+            throw new RuntimeException();
         }
-        return false;
+        this.id = type + String.format("%07d", id);
+        this.home = home;
+        this.lat = home.lat;
+        this.lat = home.lon;
+        this.dest = home;
     }
-    
+
+    public boolean tickAndCheckIfArrived() {
+        // TODO: move toward dest
+        // if it arrives/passes, return True
+        // return false
+    }
+
     public String getId() {
         return id;
+    }
+
+    /*
+     * first char is
+     * f (firetruck)
+     * p (police car)
+     * a (ambulance)
+     */
+    public String getType() {
+        return id.substring(0, 1);
+    }
+
+    public Location getDest() {
+        return dest;
+    }
+
+    public void sendTo(Location l) {
+        dest = l;
     }
 
     @Override

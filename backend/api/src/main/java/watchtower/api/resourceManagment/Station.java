@@ -2,30 +2,17 @@ package watchtower.api.resourceManagment;
 
 import java.util.ArrayList;
 
-public class Station {
+public class Station extends Location {
+    private String type;
 
-    
-    public double[] getLocation() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getLocation'");
+    public Station(double lat, double lon, String type) {
+        this.lat = lat;
+        this.lon = lon;
+        this.type = type;
     }
 
-    
-    public ArrayList<Unit> getAllUnits() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllUnits'");
-    }
-
-    
-    public void addUnit(Unit obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addUnit'");
-    }
-
-    
-    public Unit removeUnit(Class<? extends Unit> type) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeUnit'");
+    public String getType() {
+        return type;
     }
     
 }

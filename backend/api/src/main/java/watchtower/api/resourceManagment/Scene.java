@@ -22,7 +22,14 @@ public class Scene {
     }
 
     public void tick() {
-        // TODO: UPDATE EVERYTHING NECESSARY FOR TICK
+        for (Unit u : movingUnits) {
+            if (u.tickAndCheckIfArrived()) {
+                // let the location know that the unit arrived
+                u.getDest().arriveUnit(u);
+                // and take it off the list of movers
+                movingUnits.remove(u);
+            }
+        }
         currentTick++;
     }
 
@@ -34,8 +41,8 @@ public class Scene {
         return "disaster_id";
     }
 
-    public int allocate(String sourceId, String destinationId, Class<? extends Unit> type, int quantity) {
-        // find the node for the sourceId. 
+    public int allocate(String sourceId, String destinationId, String type, int quantity) {
+        // find the node for the sourceId.
         return -1;
     }
 
@@ -49,9 +56,9 @@ public class Scene {
         List<Unit> allStationaryUnits = new ArrayList<Unit>();
 
         // Loop through all stations and their units to grab appropriate units
-        for(Station station : allStations) {
-            for(Unit unit : station.getAllUnits()) {
-                if(unit.getId().charAt(0) == type) {
+        for (Station station : allStations) {
+            for (Unit unit : station.getAllUnits()) {
+                if (unit.getId().charAt(0) == type) {
                     allStationaryUnits.add(unit);
                 }
             }
