@@ -6,8 +6,8 @@ public class Station extends Location {
     private String type;
 
     public Station(double lat, double lon, String type) {
-        this.lat = lat;
-        this.lon = lon;
+        super.lat = lat;
+        super.lon = lon;
         this.type = type;
     }
 
