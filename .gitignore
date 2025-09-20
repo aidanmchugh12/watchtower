@@ -1,0 +1,36 @@
+# Root-level ignores
+# OS
+Thumbs.db
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+
+# OneDrive temp files
+~$*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore node_modules if any at root
+node_modules/
+
+# Maven / Java
+**/target/
+**/out/
+*.class
+*.jar
+*.war
+
+# Build artifacts
+dist/
+build/
+
+# Env files
+.env
+.env.local
+.env.*.local

@@ -1,2 +1,3 @@
-# watchtower
-SteelHacks XII
+# Watchtower (SteelHacks XII)
+
+## A disaster management tool
