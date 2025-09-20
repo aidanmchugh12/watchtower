@@ -3,8 +3,6 @@ package watchtower.api.resourceManagment;
 import java.util.*;
 import java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy;
 
-import watchtower.api.resourceManagment.Disaster;
-
 // Singleton class, there will only ever be a single instance
 public class Scene {
     private static Scene singletonInstance = null;
