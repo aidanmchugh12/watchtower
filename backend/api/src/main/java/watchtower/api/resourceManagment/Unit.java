@@ -50,6 +50,10 @@ public abstract class Unit {
         return dest;
     }
 
+    public Location getHome() {
+        
+    }
+
     public void sendTo(Location l) {
         dest = l;
     }
