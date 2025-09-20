@@ -6,9 +6,10 @@ public class Disaster extends Location {
     private String type;
     private int severity;
 
-    public Disaster(double lat, double lon, String type, int severity) {
+    public Disaster(double lat, double lon, String type, int id, int severity) {
         super.lat = lat;
         super.lon = lon;
+        super.id = type + String.format("%07d", id);
         this.type = type;
         this.severity = severity;
     }
