@@ -12,34 +12,44 @@ public class DecisionAlgorithm {
         Scene scene = Scene.getInstance();
 
         // MAKE A LIST OF ALL FREE UNITS
-        // Grab all stationary units
-        List<Unit> allFreeUnits = scene.getAllStationaryUnits();
+        // Grab stationary units safely (make a modifiable copy)
+        List<Unit> stationary = scene.getAllStationaryUnits();
+        List<Unit> allFreeUnits = (stationary == null) ? new ArrayList<>() : new ArrayList<>(stationary);
 
-        // Grab all in route & returning units
+        // Grab moving units and collect returning ones
         List<Unit> movingUnits = scene.getAllMovingUnits();
-        List<Unit> returningUnits = new ArrayList<Unit>();
-        for(Unit unit : movingUnits) {
-            // If desitation & home values are the same, the unit is returning
-            if(unit.getDest().lat == unit.getHome().lat && unit.getDest().lon == unit.getHome().lon) {
-                returningUnits.add(unit);
+        if(movingUnits != null) {
+            for(Unit unit : movingUnits) {
+                if(unit.getDest() == null || unit.getHome() == null) continue;
+                // consider unit returning if dest == home
+                if (Double.compare(unit.getDest().lat, unit.getHome().lat) == 0
+                        && Double.compare(unit.getDest().lon, unit.getHome().lon) == 0) {
+                    allFreeUnits.add(unit);
+                }
             }
         }
-        allFreeUnits.addAll(returningUnits); // ALL FREE UNITS (STATIONARY & RETURNING)
+
+        Collections.sort(allFreeUnits, 
+            (a, b) -> Double.compare(
+                Util.calculateDistance(a.getLat(), a.getLon(), disaster.lat, disaster.lon), 
+                Util.calculateDistance(b.getLat(), b.getLon(), disaster.lat, disaster.lon))
+        );
+
+        // Establish reccomended units for disaster
+        int reccomendedUnits = disaster.getSeverityLevel(); // TODO: make better calculation later
 
 
+        List<Unit> unitsToUse = new ArrayList<Unit>(); // RETURN ARRAYLIST
+        int unitsAdded = 0;
 
-        // // Establish reccomended units for disaster
-        // int reccomendedUnits = 0;
-        // String reccomendedUnitType = "";
-
-
-        // List<Unit> unitsToUse = new ArrayList<Unit>(); // RETURN ARRAYLIST
-
-        // // First: prefer returning units if they're closer than the nearest station
-        // for(Unit unit : returningUnits) {
-            
-        // }
-
+        // Loop through sorted units and add them to units to use
+        for(Unit unit : allFreeUnits) {
+            if(unitsAdded == reccomendedUnits) {
+                break;
+            }
+            unitsToUse.add(unit);
+            unitsAdded++;
+        }
 
         return unitsToUse;
     }
