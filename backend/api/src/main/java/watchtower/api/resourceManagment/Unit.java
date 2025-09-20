@@ -19,9 +19,13 @@ public abstract class Unit {
     }
 
     public boolean tickAndCheckIfArrived() {
-        // TODO: move toward dest
-        // if it arrives/passes, return True
-        // return false
+        if (Util.calculateDistance(lat, lon, dest.lat, dest.lon) <= Util.distPerTick) {
+            return true;
+        }
+        double[] dirWeights = Util.calculateDirection(lat, lon, dest.lat, dest.lon);
+        lat += dirWeights[0] * Util.distPerTick;
+        lon += dirWeights[1] * Util.distPerTick;
+        return false;
     }
 
     public String getId() {
