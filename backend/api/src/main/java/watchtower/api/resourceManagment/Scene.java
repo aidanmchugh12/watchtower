@@ -99,6 +99,7 @@ public class Scene {
                     u.sendTo(dest);
                     movingUnits.add(u);
                 }
+                return;
             }
         }
     }
