@@ -25,6 +25,11 @@ public class Controller {
         return "Hello from Watchtower!";
     }
 
+    @GetMapping("/api/scene")
+    public String scene() {
+        return s.toString();
+    }
+
     @PostMapping("/api/initializeScene")
     public String initializeScene(@RequestBody Station[] entity) {
         // turn it into a list to pass to the constructor
