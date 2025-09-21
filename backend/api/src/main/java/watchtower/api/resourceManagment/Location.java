@@ -1,4 +1,5 @@
 package watchtower.api.resourceManagment;
+
 import watchtower.api.Log;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public abstract class Location {
             Unit u = units.get(i);
             if (u.getId().equals(id)) {
                 u.setCurrentLocation(null);
-                Log.log("unit " + u.getId() + " has left " + id);
+                Log.log("unit " + u.getId() + " has left " + this.id);
                 if (this instanceof Station && units.size() == 0) {
                     Log.log("notice: station " + getId() + " has no remaining capacity");
                 }
