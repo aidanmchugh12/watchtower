@@ -82,4 +82,10 @@ public class Unit {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "unit " + id + " from station " + home.getId() + " at " + Double.toString(lat) + ","
+                + Double.toString(lon);
+    }
 }
