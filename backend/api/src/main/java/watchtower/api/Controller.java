@@ -3,6 +3,7 @@ package watchtower.api;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ public class Controller {
     }
 
     @GetMapping("/api/log")
+    @CrossOrigin(origins = "http://localhost:5173")
     public String log() {
         String str = "[";
         for (String l : Log.getLogs()) {
@@ -39,7 +41,7 @@ public class Controller {
         if (str.length() <= 2) {
             return "[]";
         }
-        str = str.substring(0, str.length() - 2) + "]";
+        str = str.substring(0, str.length() - 1) + "]";
         return str;
     }
 
