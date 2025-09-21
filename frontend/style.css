@@ -1,21 +1,23 @@
-html, body {
+html,
+body {
     height: 100%;
-    margin: 0;  
+    margin: 0;
 }
+
 #map {
     height: 100%;
     width: 100%;
 }
 
 .map-box {
-position: absolute; 
-background-color: rgba(255, 255, 255, 0.82); 
-height: 250px;
-width: 250px;
-padding: 1rem;
-border-radius: 8px;
-box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-z-index: 1000;    
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.82);
+    height: 250px;
+    width: 250px;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
 }
 
 .open {
@@ -26,7 +28,7 @@ z-index: 1000;
     position: absolute;
     top: 20px;
     left: 50%;
-    transform: translateX(-50%); 
+    transform: translateX(-50%);
     padding: 5;
     border-radius: 8px;
     text-align: center;
@@ -53,17 +55,17 @@ z-index: 1000;
     position: absolute;
     bottom: 20px;
     left: 50%;
-    transform: translateX(-50%); 
-    background: rgba(255,255,255,0.9);
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.9);
     padding: 0.5rem 1rem;
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     text-align: center;
     z-index: 1000;
     width: 300px;
 }
 
-.time-controls{
+.time-controls {
     position: absolute;
     bottom: 20px;
     left: 50%;
@@ -74,7 +76,7 @@ z-index: 1000;
     z-index: 1000;
 }
 
-.control-button{
+.control-button {
     width: 40px;
     height: 40px;
     border: none;
@@ -85,18 +87,18 @@ z-index: 1000;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.pause-button{
-    background: #d32121; 
+.pause-button {
+    background: #d32121;
 }
 
-.resume-button{
-    background: #35d232; 
+.resume-button {
+    background: #35d232;
 }
 
-.control-button.disabled{
+.control-button.disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
@@ -130,44 +132,49 @@ z-index: 1000;
     width: 100%;
     height: 15px;
     background-color: #e0e0e0;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
     overflow: hidden;
 }
 
-    
+
 .progress-section {
     height: 100%;
-    flex: 1; /* Ensures equal width for all sections */
+    flex: 1;
+    /* Ensures equal width for all sections */
     text-align: center;
 }
 
 .section-1 {
-    background-color: #d70707; 
+    background-color: #d70707;
     text-align: center;
 }
 
 .section-2 {
-    background-color: #f3e817; 
+    background-color: #f3e817;
     text-align: center;
 }
 
 .section-3 {
-    background-color: #20d538; 
+    background-color: #20d538;
     text-align: center;
 }
 
-.modal-container{
+.modal-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.0); /* keep backdrop transparent so corner popup doesn't distract sim */
-    z-index: 2000; /* makes sure it is above the map */
-    display: none; 
-    align-items: flex-end; /* bottomm */
-    justify-content: flex-end;  /* right */
+    background-color: rgba(0, 0, 0, 0.0);
+    /* keep backdrop transparent so corner popup doesn't distract sim */
+    z-index: 2000;
+    /* makes sure it is above the map */
+    display: none;
+    align-items: flex-end;
+    /* bottomm */
+    justify-content: flex-end;
+    /* right */
     pointer-events: none;
     opacity: 0;
     transition: opacity 160ms ease-in-out;
@@ -175,25 +182,25 @@ z-index: 1000;
 
 
 
-.modal-container.show{
+.modal-container.show {
     display: flex;
     pointer-events: auto;
     opacity: 1;
 }
 
-.modal{
+.modal {
     position: relative;
     width: 320px;
     max-width: 90%;
-    margin: 16px; 
+    margin: 16px;
     background-color: #fff;
     border-radius: 8px;
     padding: 14px;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
     text-align: center;
 }
 
-.reject-button{
+.reject-button {
     background: #d32121;
     height: 20px;
     border-radius: 5px;
@@ -204,7 +211,7 @@ z-index: 1000;
     margin-right: 10px;
 }
 
-.accept-button{
+.accept-button {
     background: #35d232;
     height: 20px;
     border-radius: 5px;

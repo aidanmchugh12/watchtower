@@ -25,8 +25,8 @@ public class Unit {
             return true;
         }
         double[] dirWeights = Util.calculateDirection(lat, lon, dest.lat, dest.lon);
-        lat += dirWeights[0] * Util.distPerTick;
-        lon += dirWeights[1] * Util.distPerTick;
+        lon += dirWeights[0] * Util.distPerTick;
+        lat += dirWeights[1] * Util.distPerTick;
         return false;
     }
 
