@@ -137,24 +137,19 @@ body {
 
 .progress-section {
   height: 100%;
-  flex: 1;
-  /* Ensures equal width for all sections */
   text-align: center;
 }
 
 .section-1 {
   background-color: #d70707;
-  text-align: center;
 }
 
 .section-2 {
   background-color: #f3e817;
-  text-align: center;
 }
 
 .section-3 {
   background-color: #20d538;
-  text-align: center;
 }
 
 .modal-container {

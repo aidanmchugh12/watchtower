@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import watchtower.api.resourceManagment.Disaster;
 import watchtower.api.resourceManagment.Scene;
 import watchtower.api.resourceManagment.Station;
+import watchtower.api.resourceManagment.Unit;
 
 import watchtower.api.ApiClasses.*;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,6 +44,40 @@ public class Controller {
         }
         str = str.substring(0, str.length() - 1) + "]";
         return str;
+    }
+
+    @GetMapping("/api/resources")
+    @CrossOrigin(origins = "http://localhost:5173")
+    public ResourceSummary resources() {
+        ResourceSummary summary = new ResourceSummary();
+
+        for (Station station : s.getAllStations()) {
+            summary.fireTrucksAvailable += station.countUnits("f");
+            summary.policeCarsAvailable += station.countUnits("p");
+            summary.ambulancesAvailable += station.countUnits("a");
+        }
+
+        for (Unit u : s.getMovingUnits()) {
+            switch (u.getType()) {
+                case "f":
+                    summary.fireTrucksEnRoute++;
+                    break;
+                case "p":
+                    summary.policeCarsEnRoute++;
+                    break;
+                case "a":
+                    summary.ambulancesEnRoute++;
+                    break;
+            }
+        }
+
+        for (Disaster disaster : s.getDisasters()) {
+            summary.fireTrucksAtScene += disaster.countUnits("f");
+            summary.policeCarsAtScene += disaster.countUnits("p");
+            summary.ambulancesAtScene += disaster.countUnits("a");
+        }
+
+        return summary;
     }
 
     @PostMapping("/api/initializeScene")
