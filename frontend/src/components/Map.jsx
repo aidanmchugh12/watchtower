@@ -21,6 +21,9 @@ export default function Map() {
   // ];
   const [stations, setStations] = useState([]);
 
+  const [disasters, setDisasters] = useState([]);
+  const [movingUnits, setMovingUnits] = useState([]);
+
   useEffect(() => {
     const combined = [
       ...policeStations.map((s) => ({ ...s, type: "p" })),
@@ -28,10 +31,47 @@ export default function Map() {
       ...hospitals.map((s) => ({ ...s, type: "a" })),
     ];
     setStations(combined);
-  }, [policeStations, fireStations, hospitals]);
 
-  const [disasters, setDisasters] = useState([]);
-  const [movingUnits, setMovingUnits] = useState([]);
+    const initializeAndStart = async () => {
+      try {
+        const initResponse = await fetch(
+          "http://localhost:8080/api/initializeScene",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(combined),
+          }
+        );
+
+        if (!initResponse.ok) {
+          throw new Error("Failed to initialize scene");
+        }
+
+        const initData = await initResponse.json();
+        setStations(initData.stations || []);
+        setDisasters(initData.disasters || []);
+        setMovingUnits(initData.movingUnits || []);
+
+        const startResponse = await fetch(
+          "http://localhost:8080/api/simulation/start",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+
+        if (!startResponse.ok) {
+          throw new Error("Failed to start simulation");
+        }
+
+        console.log("Simulation started successfully");
+      } catch (err) {
+        console.error("Error initializing simulation:", err);
+      }
+    };
+
+    initializeAndStart();
+  }, [policeStations, fireStations, hospitals]); // runs once on mount
 
   // Initialize map only once
   useEffect(() => {
@@ -75,6 +115,7 @@ export default function Map() {
         setStations(data.stations || []);
         setDisasters(data.disasters || []);
         setMovingUnits(data.movingUnits || []);
+        setStations(data.stations || []);
       } catch (err) {
         console.error("Error parsing SSE data:", err);
       }
@@ -210,16 +251,15 @@ export default function Map() {
       <div id="map" ref={mapRef} style={{ height: "100vh", width: "100%" }} />
 
       {/* Resource Box */}
-      <Resources policeStations={policeStations}
+      <Resources
+        policeStations={policeStations}
         fireStations={fireStations}
-        hospitals={hospitals}>
-      </Resources>
+        hospitals={hospitals}
+      ></Resources>
 
       {/* Log Box */}
       <div className="map-box top-right">
-        <Log
-          logs={[]}
-        ></Log>
+        <Log logs={[]}></Log>
         <button onClick={() => setShowModal(true)}>Open</button>
       </div>
 

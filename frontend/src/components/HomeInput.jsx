@@ -68,7 +68,7 @@ export default function HomeInput() {
         }
 
         const station = {
-          id: el.id || index,
+          id: el.id % 10000 || index,
           type,
           lat: el.lat || el.center?.lat,
           lon: el.lon || el.center?.lon,
