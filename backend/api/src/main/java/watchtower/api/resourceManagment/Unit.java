@@ -1,11 +1,16 @@
 package watchtower.api.resourceManagment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Unit {
     private double lat;
     private double lon;
     private String id;
+    @JsonIgnore
     private Station home;
+    @JsonIgnore
     private Location dest;
+    @JsonIgnore
     private Location currentLocation;
 
     public Unit(String type, Station home, int id) {

@@ -4,23 +4,48 @@ import "leaflet/dist/leaflet.css";
 import "./style.css";
 
 export default function Map() {
-  const mapRef = useRef(null); // div container
-  const leafletMapRef = useRef(null); // store Leaflet map instance
+  const mapRef = useRef(null);
+  const leafletMapRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [timePaused, setTimePaused] = useState(false);
 
   const dummyStations = [
     { lat: 40.4406, lon: -79.9959, type: "F", capacity: 10, id: 100 },
-    { lat: 40.4606, lon: -79.97, type: "P", capacity: 5, id: 100 },
-    { lat: 40.42, lon: -80.03, type: "H", capacity: 2, id: 100 },
+    { lat: 40.4606, lon: -79.97, type: "P", capacity: 5, id: 101 },
+    { lat: 40.42, lon: -80.03, type: "H", capacity: 2, id: 102 },
   ];
-  const [allStations, setAllStations] = useState(dummyStations);
-  const [unitData, setUnitData] = useState(null);
-  const [allMovingUnits, setAllMovingUnits] = useState(null);
+  const [stations] = useState(dummyStations);
+  const [disasters, setDisasters] = useState([]);
+  const [movingUnits, setMovingUnits] = useState([]);
 
-  // Add method to populate stations
-  // Add method to populate police cars, fire trucks, and ambulances
-  // Add method to populate moving unit data
+  // SSE listener
+  useEffect(() => {
+    const eventSource = new EventSource(
+      "http://localhost:8080/api/simulation/stream"
+    );
+
+    eventSource.onmessage = (e) => {
+      console.log("SSE received:", e.data);
+      try {
+        const data = JSON.parse(e.data);
+        setDisasters(data.disasters || []);
+        setMovingUnits(data.movingUnits || []);
+      } catch (err) {
+        console.error("Error parsing SSE data:", err);
+      }
+    };
+
+    eventSource.onerror = (err) => {
+      console.error("SSE error:", err);
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+
+  // Initialize map + stations once
   useEffect(() => {
     if (mapRef.current && !leafletMapRef.current) {
       const leafletMap = L.map(mapRef.current, {
@@ -42,12 +67,12 @@ export default function Map() {
       ]);
       leafletMap.options.maxBoundsViscosity = 1.0;
 
-      // Populate stations on map
+      // Station icons
       var StationaryIcon = L.Icon.extend({
         options: {
-          iconSize: [40, 40], // size of the icon
-          iconAnchor: [20, 20], // point of the icon which will correspond to marker's location
-          popupAnchor: [0, -20], // point from which the popup should open relative to the iconAnchor
+          iconSize: [40, 40],
+          iconAnchor: [20, 20],
+          popupAnchor: [0, -20],
         },
       });
 
@@ -57,9 +82,9 @@ export default function Map() {
         F: new StationaryIcon({ iconUrl: "../icons/firehouseicon.png" }),
       };
 
-      // Loop over all stations and add markers
-      allStations.forEach((station) => {
-        const icon = icons[station.type] || icons["F"]; // fallback
+      // Add stations
+      stations.forEach((station) => {
+        const icon = icons[station.type] || icons["F"];
         L.marker([station.lat, station.lon], { icon })
           .addTo(leafletMap)
           .bindPopup(
@@ -69,15 +94,37 @@ export default function Map() {
                 : station.type === "H"
                 ? "Hospital"
                 : "Firehouse"
-            }</b><br/>
-             Capacity: ${station.capacity}<br/>`
+            }</b><br/>Capacity: ${station.capacity}<br/>`
           );
       });
 
-      // save to ref so it persists across renders
+      // Save reference
       leafletMapRef.current = leafletMap;
     }
-  }, []);
+  }, [stations]);
+
+  // Update disasters dynamically
+  useEffect(() => {
+    if (!leafletMapRef.current) return;
+
+    // Remove old layer if it exists
+    if (leafletMapRef.current._disasterLayer) {
+      leafletMapRef.current.removeLayer(leafletMapRef.current._disasterLayer);
+    }
+
+    const disasterLayer = L.layerGroup();
+    disasters.forEach((disaster) => {
+      L.circle([disaster.lat, disaster.lon], {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.5,
+        radius: disaster.severityLevel * 100,
+      }).addTo(disasterLayer);
+    });
+
+    disasterLayer.addTo(leafletMapRef.current);
+    leafletMapRef.current._disasterLayer = disasterLayer;
+  }, [disasters]);
 
   return (
     <div>

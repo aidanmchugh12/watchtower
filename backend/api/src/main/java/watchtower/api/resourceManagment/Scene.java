@@ -164,7 +164,15 @@ public class Scene {
         return allStationaryUnits;
     }
 
-    public List<Unit> getAllMovingUnits() {
+    public List<Station> getStations() {
+        return stations;
+    }
+
+    public List<Disaster> getDisasters() {
+        return disasters;
+    }
+
+    public List<Unit> getMovingUnits() {
         return movingUnits;
     }
 

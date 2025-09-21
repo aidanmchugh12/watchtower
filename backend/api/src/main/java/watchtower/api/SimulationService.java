@@ -13,6 +13,7 @@ public class SimulationService {
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private boolean running = false;
     private int tickCount = 0;
+    Scene scene = Scene.getInstance();
 
     // Start simulation ticks
     public synchronized void startSimulation() {
@@ -33,7 +34,7 @@ public class SimulationService {
     private synchronized void tick() {
         tickCount++;
         System.out.println("Tick: " + tickCount);
-        // TODO: ADD TICK FUNCTION CALL
+        scene.tick();
     }
 
     public synchronized int getTickCount() {

@@ -17,7 +17,7 @@ public class DecisionAlgorithm {
         List<Unit> allFreeUnits = (stationary == null) ? new ArrayList<>() : new ArrayList<>(stationary);
 
         // Grab moving units and collect returning ones
-        List<Unit> movingUnits = scene.getAllMovingUnits();
+        List<Unit> movingUnits = scene.getMovingUnits();
         if(movingUnits != null) {
             for(Unit unit : movingUnits) {
                 if(unit.getDest() == null || unit.getHome() == null) continue;
