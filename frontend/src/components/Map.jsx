@@ -149,7 +149,7 @@ export default function Map() {
     disasters.forEach((disaster) => {
       L.circle([disaster.lat, disaster.lon], {
         color: "red",
-        fillColor: "#f03",
+        fillColor: disaster.type == "fire" ? "#f03" : disaster.type == "flood" ? "#30f" : "#fa0",
         fillOpacity: 0.5,
         radius: disaster.severityLevel * 100,
       }).addTo(disasterLayer);
