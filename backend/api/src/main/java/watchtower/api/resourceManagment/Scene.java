@@ -69,8 +69,8 @@ public class Scene {
         return currentTick;
     }
 
-    public String addRandomDisaster() {
-        return "disaster_id";
+    public void addDisaster(Disaster d) {
+        disasters.add(d);
     }
 
     // for a list of units allocated by the decision algorithm
