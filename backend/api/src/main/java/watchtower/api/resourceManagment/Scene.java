@@ -49,7 +49,9 @@ public class Scene {
         for (Disaster d : disasters) {
             if (d.tickAndCheckIfOver()) {
                 // release all units
-                for (Unit u : d.getUnits()) {
+                List<Unit> list = d.getUnits();
+                for (int i = list.size() - 1; i >= 0; i--) {
+                    Unit u = list.get(i);
                     d.releaseUnit(u.getId());
                     u.sendTo(u.getHome());
                     movingUnits.add(u);
@@ -72,7 +74,7 @@ public class Scene {
             disasters.remove(disaster);
         }
 
-        if (currentTick % 10 == 0) {
+        if (currentTick % 20 == 0) {
             if (Math.random() > 0.75) {
                 double typeval = Math.random();
                 String type;
