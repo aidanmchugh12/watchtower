@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useAppContext } from "./AppContext";
 import { useNavigate } from "react-router-dom";
 
 export default function HomeInput() {
+
   const [selectedCity, setSelectedCity] = useState("");
-  const [policeStations, setPoliceStations] = useState([]);
-  const [fireStations, setFireStations] = useState([]);
-  const [hospitals, setHospitals] = useState([]);
+  const { policeStations, setPoliceStations, fireStations, setFireStations, hospitals, setHospitals } = useAppContext();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -72,7 +72,9 @@ export default function HomeInput() {
       alert("Please select a city before continuing!");
       return;
     }
-    navigate("/Disaster");
+    navigate("/Disaster", {
+      state: { policeStations, fireStations, hospitals },
+    });
   };
   const updateCapacity = (stationType, stationId, newCapacity) => {
     const capacity = parseInt(newCapacity) || 0;

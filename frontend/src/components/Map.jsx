@@ -2,10 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./style.css";
+import { useLocation } from "react-router-dom";
+import { useAppContext } from "./AppContext";
 import Log from "./Log";
 
 export default function Map() {
   const mapRef = useRef(null);
+  const location = useLocation();
+  const { policeStations, fireStations, hospitals } = useAppContext();
   const leafletMapRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [timePaused, setTimePaused] = useState(false);
@@ -19,6 +23,8 @@ export default function Map() {
   const [disasters, setDisasters] = useState([]);
   const [movingUnits, setMovingUnits] = useState([]);
 
+  const totalCapacity = (stations) =>
+    stations.reduce((sum, station) => sum + (station.capacity || 0), 0);
   // SSE listener
   useEffect(() => {
     const eventSource = new EventSource(
@@ -180,19 +186,19 @@ export default function Map() {
         <p className="centered">
           <strong>Resources</strong>
         </p>
-        <p>Police Cars: 10</p>
+        <p>Police Cars: {totalCapacity(policeStations)}</p>
         <div className="progress-bar">
           <div className="progress-section section-1">5</div>
           <div className="progress-section section-2">3</div>
           <div className="progress-section section-3">2</div>
         </div>
-        <p>Fire Trucks: 10</p>
+        <p>Fire Trucks: {totalCapacity(fireStations)}</p>
         <div className="progress-bar">
           <div className="progress-section section-1">2</div>
           <div className="progress-section section-2">7</div>
           <div className="progress-section section-3">1</div>
         </div>
-        <p>Ambulances: 10</p>
+        <p>Ambulances: {totalCapacity(hospitals)}</p>
         <div className="progress-bar">
           <div className="progress-section section-1">2</div>
           <div className="progress-section section-2">6</div>

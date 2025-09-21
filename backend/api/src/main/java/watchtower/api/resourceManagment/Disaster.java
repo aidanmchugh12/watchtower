@@ -1,4 +1,5 @@
 package watchtower.api.resourceManagment;
+
 import watchtower.api.Log;
 
 import java.util.ArrayList;
@@ -20,6 +21,13 @@ public class Disaster extends Location {
 
     public boolean tickAndCheckIfOver() {
         ticksLeft--;
+        if (ticksLeft > 0 && ticksLeft % 10 == 0) {
+            if (units.size() > severity * 5 && severity > 0) {
+                decreaseSeverityLevel();
+            } else if (units.size() == 0 && severity < 5) {
+                increaseSeverityLevel();
+            }
+        }
         return ticksLeft <= 0;
     }
 
@@ -33,7 +41,8 @@ public class Disaster extends Location {
         severity--;
         Log.log("notice: disaster " + id + " has decreased to severity level " + severity);
         if (severity == 0) {
-            // maybe get rid of the disaster?
+            // the disaster will go away soon
+            ticksLeft = 5;
         }
         return severity;
     }
