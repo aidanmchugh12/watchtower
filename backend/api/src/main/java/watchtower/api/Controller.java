@@ -31,8 +31,16 @@ public class Controller {
     }
 
     @GetMapping("/api/log")
-    public String getMethodName() {
-        return Log.getLogs().toString();
+    public String log() {
+        String str = "[";
+        for (String l : Log.getLogs()) {
+            str += "\"" + l + "\",";
+        }
+        if (str.length() <= 2) {
+            return "[]";
+        }
+        str = str.substring(0, str.length() - 2) + "]";
+        return str;
     }
 
     @PostMapping("/api/initializeScene")

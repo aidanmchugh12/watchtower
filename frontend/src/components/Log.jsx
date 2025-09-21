@@ -5,7 +5,7 @@ export default function Log() {
 
   useEffect(() => {
     const fetchLogs = async () => {
-      const res = await fetch("/api/logs");
+      const res = await fetch("http://localhost:8080/api/log");
       const data = await res.json();
       setLogs(data);
     };
