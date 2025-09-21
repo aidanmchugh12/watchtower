@@ -22,11 +22,21 @@ public class Controller {
 
     @PostMapping("/api/initializeScene")
     public String initializeScene(@RequestBody Station[] entity) {
+        // turn it into a list to pass to the constructor
         List<Station> stations = Arrays.asList(entity);
 
+        // count the units to validate for output
+        int totalUnits = 0;
+        for (Station s : stations) {
+            totalUnits += s.capacity;
+        }
+
+        // construct the scene
         s = new Scene(stations);
 
-        return "yippee\n" + entity[0].id;
+        // return
+        return "Successfully initialized scene with " + Integer.toString(stations.size()) + " stations with "
+                + Integer.toString(totalUnits) + " total units of capacity.";
     }
 
 }
