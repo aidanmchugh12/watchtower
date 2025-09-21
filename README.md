@@ -11,10 +11,6 @@ An interactive web based platform that models disaster scenarios (fires, floods,
 - Tick-based Simulation Engine
 - Interactive Map Interface
 - Resource Constraints & Statistics
-- 
-![demo](images/demo.png)
-![city](images/cityselect.png)
-![disaster](images/disasterselect.png)
 
 ## Tech Stack
 - React (JavaScript)
@@ -22,3 +18,8 @@ An interactive web based platform that models disaster scenarios (fires, floods,
 - Leaflet
 - OpenStreetMap -> Overpass API
 
+## Gallery
+
+![demo](images/demo.png)
+![city](images/cityselect.png)
+![disaster](images/disasterselect.png)
