@@ -72,6 +72,7 @@ export default function HomeInput() {
           type,
           lat: el.lat || el.center?.lat,
           lon: el.lon || el.center?.lon,
+          name: el.tags?.name || "Unknown",
           capacity: Math.floor(Math.random() * 10) + 1,
         };
 
