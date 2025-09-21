@@ -44,7 +44,7 @@ export default function HomeInput() {
         type: el.tags?.amenity,
         lat: el.lat || el.center?.lat,
         lon: el.lon || el.center?.lon,
-        capacity: Math.floor(Math.random() * 11) //0-10
+        capacity: Math.ceil(Math.random() * 10) //0-10
       }));
 
       const filteredStations = stations.filter(station => station.name !== "Unknown");
@@ -158,8 +158,8 @@ export default function HomeInput() {
   return (
     <div style={{
       position: 'relative',
-      height: '100vh',
-      width: '100vw',
+      height: '100dvh',
+      width: '100dvw',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -221,7 +221,7 @@ export default function HomeInput() {
         transform: 'translate(-50%, -50%)',
         backgroundColor: 'rgba(255, 255, 255, 0.9)',
         height: '450px',
-        width: '600px',
+        width: '650px',
         padding: '1rem',
         borderRadius: '8px',
         boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
