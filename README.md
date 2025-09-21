@@ -11,10 +11,10 @@ An interactive web based platform that models disaster scenarios (fires, floods,
 - Tick-based Simulation Engine
 - Interactive Map Interface
 - Resource Constraints & Statistics
-
-![city] (images/cityselect.png)
-![disaster] (images/disasterselect.png)
-![demo] (images/demo.png)
+- 
+![demo](images/demo.png)
+![city](images/cityselect.png)
+![disaster](images/disasterselect.png)
 
 ## Tech Stack
 - React (JavaScript)
