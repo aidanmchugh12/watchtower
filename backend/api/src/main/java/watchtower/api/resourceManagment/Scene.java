@@ -173,4 +173,15 @@ public class Scene {
         }
         return singletonInstance;
     }
+
+    @Override
+    public String toString() {
+        return "Scene at tick number " + Long.toString(currentTick) + "\n"
+                + "Stations: \n"
+                + stations.toString() + "\n"
+                + "Disasters: \n"
+                + disasters.toString() + "\n"
+                + "Moving units: \n"
+                + movingUnits.toString() + "\n";
+    }
 }
