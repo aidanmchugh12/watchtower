@@ -12,7 +12,9 @@ An interactive web based platform that models disaster scenarios (fires, floods,
 - Interactive Map Interface
 - Resource Constraints & Statistics
 
-[Pictures]
+![city] (images/cityselect.png)
+![disaster] (images/disasterselect.png)
+![demo] (images/demo.png)
 
 ## Tech Stack
 - React (JavaScript)
