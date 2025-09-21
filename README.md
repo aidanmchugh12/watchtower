@@ -1,5 +1,5 @@
 # Watchtower (SteelHacks XII)
-## A "Real time" disaster response simulator
+## A "real time" disaster response simulator
 ### Made by Aidan McHugh, James Toscano, & Noah Knishkowy
 
 ## Description
