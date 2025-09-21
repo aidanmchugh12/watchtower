@@ -21,8 +21,8 @@ public class Disaster extends Location {
 
     public boolean tickAndCheckIfOver() {
         ticksLeft--;
-        if (ticksLeft > 0 && ticksLeft % 10 == 0) {
-            if (units.size() > severity * 5 && severity > 0) {
+        if (ticksLeft > 0 && ticksLeft % 20 == 0) {
+            if (units.size() > severity * 3 && severity > 0) {
                 decreaseSeverityLevel();
             } else if (units.size() == 0 && severity < 5) {
                 increaseSeverityLevel();
