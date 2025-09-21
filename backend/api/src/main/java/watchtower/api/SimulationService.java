@@ -22,7 +22,7 @@ public class SimulationService {
 
         scheduler.scheduleAtFixedRate(() -> {
             tick();
-        }, 0, 1, TimeUnit.SECONDS); // update every second
+        }, 0, 400, TimeUnit.MILLISECONDS); // update every second
     }
 
     // Stop simulation ticks

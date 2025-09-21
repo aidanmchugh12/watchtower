@@ -1,7 +1,7 @@
 package watchtower.api.resourceManagment;
 
 public class Util {
-    public static final double distPerTick = 0.05;
+    public static final double distPerTick = 0.0005;
 
     public static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         double dx = lon2 - lon1;
