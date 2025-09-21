@@ -32,7 +32,7 @@ public class SimulationController {
             try {
                 while (!Thread.currentThread().isInterrupted() && simulationService.isRunning()) {
                     emitter.send(Scene.getInstance());
-                    Thread.sleep(Math.round(millisDefault * speedFactor));
+                    Thread.sleep(Math.round(millisDefault % speedFactor));
                 }
                 emitter.complete();
             } catch (IOException | InterruptedException e) {
