@@ -25,6 +25,35 @@ export default function Map() {
 
   const totalCapacity = (stations) =>
     stations.reduce((sum, station) => sum + (station.capacity || 0), 0);
+
+  // Initialize map only once
+  useEffect(() => {
+    if (mapRef.current && !leafletMapRef.current) {
+      const leafletMap = L.map(mapRef.current, {
+        center: [40.4406, -79.9959], // Pittsburgh
+        zoom: 13,
+        minZoom: 13,
+      });
+
+      L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+        {
+          maxZoom: 16,
+        }
+      ).addTo(leafletMap);
+
+      // Set bounds and lock pan outside
+      leafletMap.setMaxBounds([
+        [40.3, -80.1],
+        [40.55, -79.85],
+      ]);
+      leafletMap.options.maxBoundsViscosity = 1.0;
+
+      // Save ref so other effects can use the map
+      leafletMapRef.current = leafletMap;
+    }
+  }, []);
+
   // SSE listener
   useEffect(() => {
     const eventSource = new EventSource(
@@ -54,61 +83,49 @@ export default function Map() {
   }, []);
 
   // Initialize map + stations once
+  // Update stations dynamically
   useEffect(() => {
-    if (mapRef.current && !leafletMapRef.current) {
-      const leafletMap = L.map(mapRef.current, {
-        center: [40.4406, -79.9959],
-        zoom: 13,
-        minZoom: 13,
-      });
+    if (!leafletMapRef.current) return;
 
-      L.tileLayer(
-        "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-        {
-          maxZoom: 16,
-        }
-      ).addTo(leafletMap);
-
-      leafletMap.setMaxBounds([
-        [40.3, -80.1],
-        [40.55, -79.85],
-      ]);
-      leafletMap.options.maxBoundsViscosity = 1.0;
-
-      // Station icons
-      var StationaryIcon = L.Icon.extend({
-        options: {
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          popupAnchor: [0, -20],
-        },
-      });
-
-      const icons = {
-        p: new StationaryIcon({ iconUrl: "../icons/policeicon.png" }),
-        a: new StationaryIcon({ iconUrl: "../icons/hospitalicon.png" }),
-        f: new StationaryIcon({ iconUrl: "../icons/firehouseicon.png" }),
-      };
-
-      // Add stations
-      stations.forEach((station) => {
-        const icon = icons[station.type] || icons["f"];
-        L.marker([station.lat, station.lon], { icon })
-          .addTo(leafletMap)
-          .bindPopup(
-            `<b>${
-              station.type === "p"
-                ? "Police"
-                : station.type === "a"
-                ? "Hospital"
-                : "Firehouse"
-            }</b><br/>Capacity: ${station.capacity}<br/>`
-          );
-      });
-
-      // Save reference
-      leafletMapRef.current = leafletMap;
+    // Remove old layer if it exists
+    if (leafletMapRef.current._stationsLayer) {
+      leafletMapRef.current.removeLayer(leafletMapRef.current._stationsLayer);
     }
+
+    const stationLayer = L.layerGroup();
+
+    // Station icons
+    var StationaryIcon = L.Icon.extend({
+      options: {
+        iconSize: [40, 40],
+        iconAnchor: [20, 20],
+        popupAnchor: [0, -20],
+      },
+    });
+
+    const icons = {
+      p: new StationaryIcon({ iconUrl: "../icons/policeicon.png" }),
+      a: new StationaryIcon({ iconUrl: "../icons/hospitalicon.png" }),
+      f: new StationaryIcon({ iconUrl: "../icons/firehouseicon.png" }),
+    };
+
+    stations.forEach((station) => {
+      const icon = icons[station.type] || icons["f"];
+      L.marker([station.lat, station.lon], { icon })
+        .addTo(stationLayer)
+        .bindPopup(
+          `<b>${
+            station.type === "p"
+              ? "Police"
+              : station.type === "a"
+              ? "Hospital"
+              : "Firehouse"
+          }</b><br/>Capacity: ${station.capacity}<br/>`
+        );
+    });
+
+    stationLayer.addTo(leafletMapRef.current);
+    leafletMapRef.current._stationsLayer = stationLayer;
   }, [stations]);
 
   // Update disasters dynamically
@@ -138,7 +155,8 @@ export default function Map() {
   useEffect(() => {
     if (!leafletMapRef.current) return;
 
-    // Remove old layer if it exists
+    console.log("Rendering moving units:", movingUnits);
+
     if (leafletMapRef.current._movingUnitsLayer) {
       leafletMapRef.current.removeLayer(
         leafletMapRef.current._movingUnitsLayer
@@ -148,29 +166,31 @@ export default function Map() {
     const unitLayer = L.layerGroup();
 
     movingUnits.forEach((unit) => {
+      console.log("Unit coords:", unit.lat, unit.lon);
+
       let color;
-      switch (unit.type) {
-        case "f": // firetruck
+      switch (unit.type?.toLowerCase()) {
+        case "f":
           color = "red";
           break;
-        case "p": // police
+        case "p":
           color = "blue";
           break;
-        case "a": // ambulance
+        case "a":
           color = "green";
           break;
         default:
           color = "gray";
       }
 
-      L.circleMarker([unit.lat, unit.lon], {
-        radius: 6,
-        color,
-        fillColor: color,
-        fillOpacity: 0.9,
-      })
-        .addTo(unitLayer)
-        .bindPopup(`<b>Unit ${unit.id}</b><br/>Type: ${unit.type}`);
+      if (unit.lat && unit.lon) {
+        L.circleMarker([unit.lat, unit.lon], {
+          radius: 6,
+          color,
+          fillColor: color,
+          fillOpacity: 0.9,
+        }).addTo(unitLayer);
+      }
     });
 
     unitLayer.addTo(leafletMapRef.current);

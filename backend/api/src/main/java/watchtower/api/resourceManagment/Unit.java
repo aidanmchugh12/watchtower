@@ -20,7 +20,7 @@ public class Unit {
         this.id = type + String.format("%07d", id);
         this.home = home;
         this.lat = home.lat;
-        this.lat = home.lon;
+        this.lon = home.lon;
         this.dest = home;
         this.currentLocation = home;
     }

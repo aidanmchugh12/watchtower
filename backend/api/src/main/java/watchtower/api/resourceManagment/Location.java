@@ -4,6 +4,8 @@ import watchtower.api.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public abstract class Location {
     public List<Unit> units;
     public double lat;
@@ -40,7 +42,7 @@ public abstract class Location {
         return null;
     }
 
-    public List<Unit> getAllUnits() {
+    public List<Unit> getUnits() {
         return units;
     }
 

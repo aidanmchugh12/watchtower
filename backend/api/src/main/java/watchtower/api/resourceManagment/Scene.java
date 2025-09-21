@@ -2,6 +2,7 @@ package watchtower.api.resourceManagment;
 import watchtower.api.Log;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -34,21 +35,22 @@ public class Scene {
 
     public void tick() {
         // tick all units in motion
-        for (Unit u : movingUnits) {
+        Iterator<Unit> iterator = movingUnits.iterator();
+        while (iterator.hasNext()) {
+            Unit u = iterator.next();
             if (u.tickAndCheckIfArrived()) {
-                // let the location know that the unit arrived
                 u.getDest().arriveUnit(u);
-                // and take it off the list of movers
-                movingUnits.remove(u);
+                iterator.remove();
             }
         }
+
 
         // tick all disasters
         ArrayList<Disaster> disastersToRemove = new ArrayList<Disaster>();
         for (Disaster d : disasters) {
             if (d.tickAndCheckIfOver()) {
                 // release all units
-                for (Unit u : d.getAllUnits()) {
+                for (Unit u : d.getUnits()) {
                     d.releaseUnit(u.getId());
                     u.sendTo(u.getHome());
                     movingUnits.add(u);
@@ -93,7 +95,7 @@ public class Scene {
     public void allocateFromStation(String stationId, int num, Disaster dest) {
         for (Station s : stations) {
             if (s.getId().equals(stationId)) {
-                List<Unit> units = s.getAllUnits();
+                List<Unit> units = s.getUnits();
                 for (int i = 0; i < num; i++) {
                     if (units.size() == 0) {
                         return;
@@ -120,7 +122,7 @@ public class Scene {
 
         // backups for if the unit arrived just before the user clicks
         for (Station s : stations) {
-            for (Unit u : s.getAllUnits()) {
+            for (Unit u : s.getUnits()) {
                 if (u.getId().equals(unitId)) {
                     s.releaseUnit(unitId);
                     movingUnits.add(u);
@@ -130,7 +132,7 @@ public class Scene {
             }
         }
         for (Disaster d : disasters) {
-            for (Unit u : d.getAllUnits()) {
+            for (Unit u : d.getUnits()) {
                 if (u.getId().equals(unitId)) {
                     d.releaseUnit(unitId);
                     movingUnits.add(u);
@@ -161,7 +163,7 @@ public class Scene {
 
         // Loop through all stations and th
         for (Station station : allStations) {
-            for (Unit unit : station.getAllUnits()) {
+            for (Unit unit : station.getUnits()) {
                 allStationaryUnits.add(unit);
             }
         }
