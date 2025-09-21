@@ -1,32 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./disasterStyle.css";
 
 export default function HomeInput() {
   const [fire, setFire] = useState(5);
   const [flood, setFlood] = useState(5);
   const [crime, setCrime] = useState(5);
+  const location = useLocation();
   const navigate = useNavigate();
+  const { policeStations, fireStations, hospitals } = location.state;
 
 
 
   const handleLast = () => {
     const values = { fire, flood, crime };
-    navigate("/Map", values);
+    navigate("/Map", {
+      state: { policeStations, fireStations, hospitals, fire, flood, crime },
+    });
   };
 
   return (
-    <div class="headingPage">
-      <div class="heading-content">
+    <div className="headingPage">
+      <div className="heading-content">
         <h1 id="pageHeading">Disasters</h1>
       </div>
 
 
-      <div class="disaster-selection">
+      <div className="disaster-selection">
         <h1> Select Disaster Likeliness:</h1>
       </div>
 
-      <div class="selection-box">
+      <div className="selection-box">
         <div className="slider-row">
           <label>Fire:</label>
           <input
@@ -64,8 +68,8 @@ export default function HomeInput() {
         </div>
       </div>
 
-      <div class="simulatePage">
-        <button class="simulateText" onClick={handleLast}>Simulate</button>
+      <div className="simulatePage">
+        <button className="simulateText" onClick={handleLast}>Simulate</button>
       </div>
     </div>
   );
