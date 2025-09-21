@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./style.css";
+import Log from "./Log"
 
 export default function Map() {
   const mapRef = useRef(null); // div container
@@ -110,9 +111,20 @@ export default function Map() {
 
       {/* Log Box */}
       <div className="map-box top-right">
-        <p className="centered">
-          <strong>Live Log</strong>
-        </p>
+          <Log logs={[
+            "this is a dummy log statement with no real contents",
+            "this is a dummy log statement with no real contents",
+            "it is 9:00 pm est. the sun has set",
+            "success: fire has been put out",
+            "this is a dummy log statement with no real contents",
+            "notice: units have arrived at scene of emergency",
+            "this is a dummy log statement with no real contents of any sort at all",
+            "this is a dummy log statement with no real contents",
+            "this is a dummy log statement with no real contents of any sort at all",
+            "this is a dummy log statement with no real contents of any sort at all",
+            "DISASTER: NEW FIRE OF SEVERITY LEVEL 5",
+            "this is a dummy log statement with no real contents",
+          ]}></Log>
         <button onClick={() => setShowModal(true)}>Open</button>
       </div>
 
