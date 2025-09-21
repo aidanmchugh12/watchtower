@@ -1,7 +1,9 @@
 package watchtower.api.resourceManagment;
+import watchtower.api.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 // Singleton class, there will only ever be a single instance
 public class Scene {
@@ -58,6 +60,7 @@ public class Scene {
         }
         for (Disaster disaster : disastersToRemove) {
             // remove from the list
+            Log.log("success: disaster " + disaster.getId() + " has ended");
             disasters.remove(disaster);
         }
 
@@ -71,6 +74,8 @@ public class Scene {
 
     public void addDisaster(Disaster d) {
         disasters.add(d);
+        Log.log("DISASTER: a new " + d.getType() + " of severity level " + d.getSeverityLevel()
+                + " is occurring at coordinates " + Double.toString(d.lat) + ", " + Double.toString(d.lon));
     }
 
     // for a list of units allocated by the decision algorithm

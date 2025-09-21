@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function HomeInput() {
   const [selectedCity, setSelectedCity] = useState("");
@@ -6,6 +7,9 @@ export default function HomeInput() {
   const [fireStations, setFireStations] = useState([]);
   const [hospitals, setHospitals] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+
 
   const fetchStations = async (cityName) => {
     if (!cityName) return;
@@ -44,7 +48,7 @@ export default function HomeInput() {
         type: el.tags?.amenity,
         lat: el.lat || el.center?.lat,
         lon: el.lon || el.center?.lon,
-        capacity: Math.ceil(Math.random() * 10) //0-10
+        capacity: Math.floor(Math.random() * 10) + 1
       }));
 
       const filteredStations = stations.filter(station => station.name !== "Unknown");
@@ -63,6 +67,13 @@ export default function HomeInput() {
     }
   };
 
+  const handleNext = () => {
+    if (!selectedCity) {
+      alert("Please select a city before continuing!");
+      return;
+    }
+    navigate("/Disaster");
+  };
   const updateCapacity = (stationType, stationId, newCapacity) => {
     const capacity = parseInt(newCapacity) || 0;
 
@@ -137,7 +148,7 @@ export default function HomeInput() {
                   type="number"
                   value={station.capacity}
                   onChange={(e) => updateCapacity(station.type, station.id, e.target.value)}
-                  min="0"
+                  min="1"
                   max="100"
                   style={{
                     width: '60px',
@@ -297,7 +308,7 @@ export default function HomeInput() {
           fontWeight: 300,
           color: '#ccc',
           textShadow: '3px 3px 5px rgb(0, 0, 0)'
-        }}>Next</button>
+        }} onClick={handleNext}>Next</button>
       </div>
     </div>
   );

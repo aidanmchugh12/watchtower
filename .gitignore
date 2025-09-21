@@ -34,3 +34,7 @@ build/
 .env
 .env.local
 .env.*.local
+frontend/package.json
+frontend/package-lock.json
+frontend/package.json
+frontend/package-lock.json

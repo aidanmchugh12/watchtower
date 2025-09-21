@@ -130,6 +130,26 @@
       text-shadow: 3px 3px 5px rgb(0, 0, 0);
     }
 
+    .slider-row {
+      display: flex;
+      align-items: center;
+      margin: 8px 0;
+    }
+
+    .slider-row label {
+      width: 50px;
+      color: black;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: 300 bold;
+      margin-right: 10px;
+    }
+
+    .slider-row input[type="range"] {
+      flex: 1;
+      /* slider stretches to fill space */
+    }
+
+
     #time-slider {
       position: fixed;
       left: 20%;
@@ -152,7 +172,7 @@
     </div>
 
     <div class="disaster-selection">
-      <h1> Select Disaster Randomness:</h1>
+      <h1> Select Disaster Likeliness:</h1>
     </div>
 
     <div class="selection-box">
@@ -175,6 +195,7 @@
     <div class="simulatePage">
       <button class="simulateText">Simulate</button>
     </div>
+  </div>
 
 
 
