@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disaster Page</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .headingPage {
+      position: relative; 
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #fff;
+      text-align: center;
+      font-family: monospace;
+      background: 
+        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+        url('./icons/bnwmap.png') no-repeat center center/cover;
+      overflow: hidden;
+    }
+
+    .heading-content {
+      margin-top: 50px; 
+    }
+
+    #pageHeading {
+      font-weight: 900;
+      font-size: 64px;
+      margin: 0;
+      text-shadow: 2px 2px 5px rgb(24, 10, 85);
+      letter-spacing: 3px;
+    }
+
+    .selection-box {
+      position: absolute;
+      top: 58%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(255, 255, 255, 0.9);
+      height: 400px;
+      width: 600px;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      overflow-y: hidden; 
+    }
+
+    .results {
+      max-height: 120px;       /* scrollable area for results */
+      overflow-y: auto;
+      margin-bottom: 1rem;
+    }
+
+    .selection-box p {
+      text-shadow: 3px 3px 5px rgb(255, 255, 255);
+      text-align: left;
+      color: rgb(0, 0, 0);
+      margin-bottom: 0.3rem;
+    }
+
+    /* Table stuff*/
+    .results table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .results th, .results td {
+      border: 1px solid #ccc;
+      padding: 5px;
+      text-align: left;
+    }
+
+    .results th {
+      background-color: #f0f0f0;
+    }
+
+    .city-selection {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 75px; 
+      margin-left: 0px; 
+    }
+
+    
+    .city-selection h1 {
+      text-shadow: 3px 3px 5px rgb(17, 28, 103);
+      margin: 0; 
+    }
+
+    select {
+      width: 450px; 
+      height: 25px;
+      font-family: monospace;
+      font-size: large;
+    }
+
+
+    .simulatePage button{
+      position: absolute;
+      cursor: pointer;
+      background-color: rgb(19, 49, 147);
+      box-shadow:none;
+      height: 60px;
+      width: 200px;
+      top: 90%;
+      left: 43%;
+      font-family: monospace;
+      font-size: large;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.936);
+      font-weight: 300;
+      color: #ffffff;
+      font-size: 25px;
+      text-shadow: 3px 3px 5px rgb(0, 0, 0);
+    }
+        
+  </style>
+
+</head>
+<body>
+  <div class="headingPage">
+    <div class="heading-content">
+      <h1 id="pageHeading">Disasters</h1>
+  </div>
+
+  <div class="city-selection">
+      <h1> Select City:</h1>
+      <select id="city">
+      <option value="newyork">New York</option>
+      <option value="losangeles">Los Angeles</option>
+      <option value="pittsburgh">Pittsburgh</option>
+      <option value="dc">Washington D.C</option>
+    </select>
+  </div>
+  
+ <div class="selection-box">
+  <p class="selection-text">Police Stations:</p>
+
+  <p class="selection-text">Fire Stations:</p>
+
+  <p class="selection-text">Hospitals:</p>
+</div>
+
+<div class="simulatePage">
+  <button class="simulateText">Simulate</button>
+</div>
+
+</body>
+</html>
