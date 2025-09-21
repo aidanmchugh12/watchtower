@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./style.css";
-import Log from "./Log"
+import Log from "./Log";
 
 export default function Map() {
   const mapRef = useRef(null);
@@ -10,12 +10,12 @@ export default function Map() {
   const [showModal, setShowModal] = useState(false);
   const [timePaused, setTimePaused] = useState(false);
 
-  const dummyStations = [
-    { lat: 40.4406, lon: -79.9959, type: "F", capacity: 10, id: 100 },
-    { lat: 40.4606, lon: -79.97, type: "P", capacity: 5, id: 101 },
-    { lat: 40.42, lon: -80.03, type: "H", capacity: 2, id: 102 },
-  ];
-  const [stations] = useState(dummyStations);
+  // const dummyStations = [
+  //   { lat: 40.4406, lon: -79.9959, type: "F", capacity: 10, id: 100 },
+  //   { lat: 40.4606, lon: -79.97, type: "P", capacity: 5, id: 101 },
+  //   { lat: 40.42, lon: -80.03, type: "H", capacity: 2, id: 102 },
+  // ];
+  const [stations, setStations] = useState([]);
   const [disasters, setDisasters] = useState([]);
   const [movingUnits, setMovingUnits] = useState([]);
 
@@ -29,6 +29,7 @@ export default function Map() {
       console.log("SSE received:", e.data);
       try {
         const data = JSON.parse(e.data);
+        setStations(data.stations || []);
         setDisasters(data.disasters || []);
         setMovingUnits(data.movingUnits || []);
       } catch (err) {
@@ -78,21 +79,21 @@ export default function Map() {
       });
 
       const icons = {
-        P: new StationaryIcon({ iconUrl: "../icons/policeicon.png" }),
-        H: new StationaryIcon({ iconUrl: "../icons/hospitalicon.png" }),
-        F: new StationaryIcon({ iconUrl: "../icons/firehouseicon.png" }),
+        p: new StationaryIcon({ iconUrl: "../icons/policeicon.png" }),
+        a: new StationaryIcon({ iconUrl: "../icons/hospitalicon.png" }),
+        f: new StationaryIcon({ iconUrl: "../icons/firehouseicon.png" }),
       };
 
       // Add stations
       stations.forEach((station) => {
-        const icon = icons[station.type] || icons["F"];
+        const icon = icons[station.type] || icons["f"];
         L.marker([station.lat, station.lon], { icon })
           .addTo(leafletMap)
           .bindPopup(
             `<b>${
-              station.type === "P"
+              station.type === "p"
                 ? "Police"
-                : station.type === "H"
+                : station.type === "a"
                 ? "Hospital"
                 : "Firehouse"
             }</b><br/>Capacity: ${station.capacity}<br/>`
@@ -127,6 +128,49 @@ export default function Map() {
     leafletMapRef.current._disasterLayer = disasterLayer;
   }, [disasters]);
 
+  // Update moving units dynamically
+  useEffect(() => {
+    if (!leafletMapRef.current) return;
+
+    // Remove old layer if it exists
+    if (leafletMapRef.current._movingUnitsLayer) {
+      leafletMapRef.current.removeLayer(
+        leafletMapRef.current._movingUnitsLayer
+      );
+    }
+
+    const unitLayer = L.layerGroup();
+
+    movingUnits.forEach((unit) => {
+      let color;
+      switch (unit.type) {
+        case "f": // firetruck
+          color = "red";
+          break;
+        case "p": // police
+          color = "blue";
+          break;
+        case "a": // ambulance
+          color = "green";
+          break;
+        default:
+          color = "gray";
+      }
+
+      L.circleMarker([unit.lat, unit.lon], {
+        radius: 6,
+        color,
+        fillColor: color,
+        fillOpacity: 0.9,
+      })
+        .addTo(unitLayer)
+        .bindPopup(`<b>Unit ${unit.id}</b><br/>Type: ${unit.type}`);
+    });
+
+    unitLayer.addTo(leafletMapRef.current);
+    leafletMapRef.current._movingUnitsLayer = unitLayer;
+  }, [movingUnits]);
+
   return (
     <div>
       <div id="map" ref={mapRef} style={{ height: "100vh", width: "100%" }} />
@@ -158,7 +202,8 @@ export default function Map() {
 
       {/* Log Box */}
       <div className="map-box top-right">
-          <Log logs={[
+        <Log
+          logs={[
             "this is a dummy log statement with no real contents",
             "this is a dummy log statement with no real contents",
             "it is 9:00 pm est. the sun has set",
@@ -171,7 +216,8 @@ export default function Map() {
             "this is a dummy log statement with no real contents of any sort at all",
             "DISASTER: NEW FIRE OF SEVERITY LEVEL 5",
             "this is a dummy log statement with no real contents",
-          ]}></Log>
+          ]}
+        ></Log>
         <button onClick={() => setShowModal(true)}>Open</button>
       </div>
 
