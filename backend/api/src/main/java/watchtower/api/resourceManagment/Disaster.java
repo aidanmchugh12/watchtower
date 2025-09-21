@@ -1,4 +1,5 @@
 package watchtower.api.resourceManagment;
+import watchtower.api.Log;
 
 import java.util.ArrayList;
 
@@ -24,13 +25,13 @@ public class Disaster extends Location {
 
     public int increaseSeverityLevel() {
         severity++;
-        Util.log("notice: disaster " + id + " has increased to severity level " + severity);
+        Log.log("notice: disaster " + id + " has increased to severity level " + severity);
         return severity;
     }
 
     public int decreaseSeverityLevel() {
         severity--;
-        Util.log("notice: disaster " + id + " has decreased to severity level " + severity);
+        Log.log("notice: disaster " + id + " has decreased to severity level " + severity);
         if (severity == 0) {
             // maybe get rid of the disaster?
         }

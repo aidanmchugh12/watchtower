@@ -13,6 +13,7 @@ import watchtower.api.resourceManagment.Scene;
 import watchtower.api.resourceManagment.Station;
 
 import watchtower.api.ApiClasses.*;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class Controller {
@@ -27,6 +28,11 @@ public class Controller {
     @GetMapping("/api/scene")
     public String scene() {
         return s.toString();
+    }
+
+    @GetMapping("/api/log")
+    public String getMethodName() {
+        return Log.getLogs().toString();
     }
 
     @PostMapping("/api/initializeScene")
