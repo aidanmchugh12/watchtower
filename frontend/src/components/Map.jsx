@@ -22,6 +22,9 @@ export default function Map() {
   // ];
   const [stations, setStations] = useState([]);
 
+  const [disasters, setDisasters] = useState([]);
+  const [movingUnits, setMovingUnits] = useState([]);
+
   useEffect(() => {
     const combined = [
       ...policeStations.map((s) => ({ ...s, type: "p" })),
@@ -29,16 +32,53 @@ export default function Map() {
       ...hospitals.map((s) => ({ ...s, type: "a" })),
     ];
     setStations(combined);
-  }, [policeStations, fireStations, hospitals]);
 
-  const [disasters, setDisasters] = useState([]);
-  const [movingUnits, setMovingUnits] = useState([]);
+    const initializeAndStart = async () => {
+      try {
+        const initResponse = await fetch(
+          "http://localhost:8080/api/initializeScene",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(combined),
+          }
+        );
+
+        if (!initResponse.ok) {
+          throw new Error("Failed to initialize scene");
+        }
+
+        const initData = await initResponse.json();
+        setStations(initData.stations || []);
+        setDisasters(initData.disasters || []);
+        setMovingUnits(initData.movingUnits || []);
+
+        const startResponse = await fetch(
+          "http://localhost:8080/api/simulation/start",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+
+        if (!startResponse.ok) {
+          throw new Error("Failed to start simulation");
+        }
+
+        console.log("Simulation started successfully");
+      } catch (err) {
+        console.error("Error initializing simulation:", err);
+      }
+    };
+
+    initializeAndStart();
+  }, [policeStations, fireStations, hospitals]); // runs once on mount
 
   // Initialize map only once
   useEffect(() => {
     if (mapRef.current && !leafletMapRef.current) {
       const leafletMap = L.map(mapRef.current, {
-        center: [40.78343, -73.96625], // TODO: Initalize center based on city
+        center: [40.4406, -79.9959], // TODO: Initalize center based on city
         zoom: 13,
         minZoom: 13,
       });
@@ -70,12 +110,13 @@ export default function Map() {
     );
 
     eventSource.onmessage = (e) => {
-      console.log("SSE received:", e.data);
+      //console.log("SSE received:", e.data);
       try {
         const data = JSON.parse(e.data);
         setStations(data.stations || []);
         setDisasters(data.disasters || []);
         setMovingUnits(data.movingUnits || []);
+        setStations(data.stations || []);
       } catch (err) {
         console.error("Error parsing SSE data:", err);
       }
@@ -83,7 +124,6 @@ export default function Map() {
 
     eventSource.onerror = (err) => {
       console.error("SSE error:", err);
-      eventSource.close();
     };
 
     return () => {
@@ -123,9 +163,10 @@ export default function Map() {
       L.marker([station.lat, station.lon], { icon })
         .addTo(stationLayer)
         .bindPopup(
-          `<b>${station.type === "p"
-            ? "Police"
-            : station.type === "a"
+          `<b>${
+            station.type === "p"
+              ? "Police"
+              : station.type === "a"
               ? "Hospital"
               : "Firehouse"
           }</b><br/>Capacity: ${station.capacity}<br/>`
@@ -149,7 +190,12 @@ export default function Map() {
     disasters.forEach((disaster) => {
       L.circle([disaster.lat, disaster.lon], {
         color: "red",
-        fillColor: disaster.type == "fire" ? "#f03" : disaster.type == "flood" ? "#30f" : "#fa0",
+        fillColor:
+          disaster.type == "fire"
+            ? "#f03"
+            : disaster.type == "flood"
+            ? "#30f"
+            : "#fa0",
         fillOpacity: 0.5,
         radius: disaster.severityLevel * 100,
       }).addTo(disasterLayer);
@@ -163,7 +209,7 @@ export default function Map() {
   useEffect(() => {
     if (!leafletMapRef.current) return;
 
-    console.log("Rendering moving units:", movingUnits);
+    //console.log("Rendering moving units:", movingUnits);
 
     if (leafletMapRef.current._movingUnitsLayer) {
       leafletMapRef.current.removeLayer(
@@ -174,7 +220,7 @@ export default function Map() {
     const unitLayer = L.layerGroup();
 
     movingUnits.forEach((unit) => {
-      console.log("Unit coords:", unit.lat, unit.lon);
+      //console.log("Unit coords:", unit.lat, unit.lon);
 
       let color;
       switch (unit.type?.toLowerCase()) {
@@ -210,27 +256,26 @@ export default function Map() {
       <div id="map" ref={mapRef} style={{ height: "100vh", width: "100%" }} />
 
       {/* Resource Box */}
-      <Resources policeStations={policeStations}
+      <Resources
+        policeStations={policeStations}
         fireStations={fireStations}
-        hospitals={hospitals}>
-      </Resources>
+        hospitals={hospitals}
+      ></Resources>
 
       {/* Log Box */}
       <div className="map-box top-right">
-        <Log
-          logs={[]}
-        ></Log>
-        {/* <button onClick={() => setShowModal(true)}>Open</button> */}
+        <Log logs={[]}></Log>
+        <button onClick={() => setShowModal(true)}>Open</button>
       </div>
 
       {/* Capacity Bar */}
-      {/* <div id="capacity-bar">
+      <div id="capacity-bar">
         <div className="bar">
           <div className="fill" style={{ width: "75%" }}>
             Capacity: 75%
           </div>
         </div>
-      </div> */}
+      </div>
 
       {/* Modal */}
       {showModal && (
