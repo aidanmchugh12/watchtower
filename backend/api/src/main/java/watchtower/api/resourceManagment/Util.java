@@ -20,4 +20,8 @@ public class Util {
 
         return new double[] { dx / length, dy / length };
     }
+
+    public static void log(String s) {
+        System.out.println(s);
+    }
 }

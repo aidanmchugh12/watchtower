@@ -18,6 +18,7 @@ public abstract class Location {
             units = new ArrayList<Unit>();
         }
         units.add(u);
+        Util.log("unit " + u.getId() + " has arrived at " + id);
         u.setCurrentLocation(this);
         u.sendTo(null);
     }
@@ -27,6 +28,10 @@ public abstract class Location {
             Unit u = units.get(i);
             if (u.getId().equals(id)) {
                 u.setCurrentLocation(null);
+                Util.log("unit " + u.getId() + " has left " + id);
+                if (this instanceof Station && units.size() == 0) {
+                    Util.log("notice: station " + getId() + " has no remaining capacity");
+                }
                 return units.remove(i);
             }
         }

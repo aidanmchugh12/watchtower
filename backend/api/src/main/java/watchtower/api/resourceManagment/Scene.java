@@ -58,6 +58,7 @@ public class Scene {
         }
         for (Disaster disaster : disastersToRemove) {
             // remove from the list
+            Util.log("success: disaster " + disaster.getId() + " has ended");
             disasters.remove(disaster);
         }
 
@@ -71,6 +72,8 @@ public class Scene {
 
     public void addDisaster(Disaster d) {
         disasters.add(d);
+        Util.log("DISASTER: a new " + d.getType() + " of severity level " + d.getSeverityLevel()
+                + " is occurring at coordinates " + Double.toString(d.lat) + ", " + Double.toString(d.lon));
     }
 
     // for a list of units allocated by the decision algorithm

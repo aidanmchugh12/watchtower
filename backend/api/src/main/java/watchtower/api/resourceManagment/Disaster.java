@@ -24,11 +24,13 @@ public class Disaster extends Location {
 
     public int increaseSeverityLevel() {
         severity++;
+        Util.log("notice: disaster " + id + " has increased to severity level " + severity);
         return severity;
     }
 
     public int decreaseSeverityLevel() {
         severity--;
+        Util.log("notice: disaster " + id + " has decreased to severity level " + severity);
         if (severity == 0) {
             // maybe get rid of the disaster?
         }
