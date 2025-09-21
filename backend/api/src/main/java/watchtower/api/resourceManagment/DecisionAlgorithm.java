@@ -36,7 +36,7 @@ public class DecisionAlgorithm {
         );
 
         // Establish reccomended units for disaster
-        int reccomendedUnits = disaster.getSeverityLevel(); // TODO: make better calculation later
+        int reccomendedUnits = 5 * disaster.getSeverityLevel(); // TODO: make better calculation later
 
 
         List<Unit> unitsToUse = new ArrayList<Unit>(); // RETURN ARRAYLIST

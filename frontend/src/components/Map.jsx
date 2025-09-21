@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { useAppContext } from "./AppContext";
 import Log from "./Log";
 import Resources from "./Resources";
+import TimeControl from "./TimeControl";
 
 export default function Map() {
   const mapRef = useRef(null);
@@ -298,31 +299,7 @@ export default function Map() {
         </div>
       )}
 
-      {/* Time Controls */}
-      <div className="time-controls">
-        <button
-          className={`control-button pause-button ${
-            timePaused ? "disabled" : ""
-          }`}
-          onClick={() => setTimePaused(true)}
-        >
-          ⏸
-        </button>
-
-        <div id="time-slider">
-          <input type="range" min="0" max="24" step="1" disabled={timePaused} />
-          <p id="time-label">Time</p>
-        </div>
-
-        <button
-          className={`control-button resume-button ${
-            !timePaused ? "disabled" : ""
-          }`}
-          onClick={() => setTimePaused(false)}
-        >
-          ▶
-        </button>
-      </div>
+      <TimeControl></TimeControl>
     </div>
   );
 }
