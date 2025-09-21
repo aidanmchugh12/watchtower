@@ -135,6 +135,15 @@ public class Scene {
         }
     }
 
+    public Disaster getDisaster(String disasterId) {
+        for (Disaster d : disasters) {
+            if (d.getId().equals(disasterId)) {
+                return d;
+            }
+        }
+        throw new RuntimeException();
+    }
+
     public List<Station> getAllStations() {
         return stations;
     }
