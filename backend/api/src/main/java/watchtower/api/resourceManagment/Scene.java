@@ -11,9 +11,16 @@ public class Scene {
     private List<Unit> movingUnits;
     private long currentTick;
 
-    private Scene(List<Station> allStations) {
+    public Scene(List<Station> allStations) {
+        int unitId = 1;
         currentTick = 0;
         stations = allStations;
+        for (Station s : stations) {
+            for (int i = 0; i <= s.capacity; i++) {
+                Unit u = new Unit(s.getType(), s, unitId);
+                unitId++;
+            }
+        }
         disasters = new ArrayList<Disaster>();
         movingUnits = new ArrayList<Unit>();
     }
