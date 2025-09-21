@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Location {
-    private List<Unit> units;
+    public List<Unit> units;
     public double lat;
     public double lon;
     public String id;
@@ -48,6 +48,7 @@ public abstract class Location {
         return count;
     }
 
+    @Override
     public boolean equals(Object other) {
         if (other instanceof Location) {
             Location otherLocation = (Location) other;
@@ -56,5 +57,13 @@ public abstract class Location {
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "location " + id + " currently with " + Integer.toString(units.size()) + " at " + Double.toString(lat)
+                + ", "
+                + Double.toString(lon);
+
     }
 }
