@@ -72,6 +72,28 @@ public class Scene {
             disasters.remove(disaster);
         }
 
+        if (currentTick % 50 == 0) {
+            if (Math.random() > 0.75) {
+                double typeval = Math.random();
+                String type;
+                if (typeval > 0.65) {
+                    type = "fire";
+                } else if (typeval > 0.3) {
+                    type = "flood";
+                } else {
+                    type = "crime";
+                }
+                int severity = (int) Math.ceil(Math.random() * 5);
+                int duration = (int) Math.ceil(Math.random() * 500);
+
+                double lat = 40.44 + 0.3 * (Math.random() - 0.5);
+                double lon = -79.99 + 0.3 * (Math.random() - 0.5);
+
+                Disaster d = new Disaster(lat, lon, type, (int) currentTick, severity, duration);
+                addDisaster(d);
+            }
+        }
+
         // increment current tick
         currentTick++;
     }
