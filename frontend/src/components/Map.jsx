@@ -9,6 +9,18 @@ export default function Map() {
   const [showModal, setShowModal] = useState(false);
   const [timePaused, setTimePaused] = useState(false);
 
+  const dummyStations = [
+    { lat: 40.4406, lon: -79.9959, type: "F", capacity: 10, id: 100 },
+    { lat: 40.4606, lon: -79.97, type: "P", capacity: 5, id: 100 },
+    { lat: 40.42, lon: -80.03, type: "H", capacity: 2, id: 100 },
+  ];
+  const [allStations, setAllStations] = useState(dummyStations);
+  const [unitData, setUnitData] = useState(null);
+  const [allMovingUnits, setAllMovingUnits] = useState(null);
+
+  // Add method to populate stations
+  // Add method to populate police cars, fire trucks, and ambulances
+  // Add method to populate moving unit data
   useEffect(() => {
     if (mapRef.current && !leafletMapRef.current) {
       const leafletMap = L.map(mapRef.current, {
@@ -30,6 +42,7 @@ export default function Map() {
       ]);
       leafletMap.options.maxBoundsViscosity = 1.0;
 
+      // Populate stations on map
       var StationaryIcon = L.Icon.extend({
         options: {
           iconSize: [40, 40], // size of the icon
@@ -38,24 +51,28 @@ export default function Map() {
         },
       });
 
-      var policeIcon = new StationaryIcon({
-        iconUrl: "../icons/policeicon.png",
+      const icons = {
+        P: new StationaryIcon({ iconUrl: "../icons/policeicon.png" }),
+        H: new StationaryIcon({ iconUrl: "../icons/hospitalicon.png" }),
+        F: new StationaryIcon({ iconUrl: "../icons/firehouseicon.png" }),
+      };
+
+      // Loop over all stations and add markers
+      allStations.forEach((station) => {
+        const icon = icons[station.type] || icons["F"]; // fallback
+        L.marker([station.lat, station.lon], { icon })
+          .addTo(leafletMap)
+          .bindPopup(
+            `<b>${
+              station.type === "P"
+                ? "Police"
+                : station.type === "H"
+                ? "Hospital"
+                : "Firehouse"
+            }</b><br/>
+             Capacity: ${station.capacity}<br/>`
+          );
       });
-      var hospitalIcon = new StationaryIcon({
-        iconUrl: "../icons/hospitalicon.png",
-      });
-      var firehouseIcon = new StationaryIcon({
-        iconUrl: "../icons/firehouseicon.png",
-      });
-      var police = L.marker([40.4406, -79.9959], { icon: policeIcon })
-        .addTo(leafletMap)
-        .bindPopup("HEY!");
-      var fire = L.marker([40.4606, -79.97], { icon: firehouseIcon }).addTo(
-        leafletMap
-      );
-      var hospital = L.marker([40.42, -80.03], { icon: hospitalIcon }).addTo(
-        leafletMap
-      );
 
       // save to ref so it persists across renders
       leafletMapRef.current = leafletMap;
