@@ -6,20 +6,20 @@ export default function TimeControl() {
 
   async function setScale(value) {
     setTimeScale(value);
-    await fetch("http://localhost:8080/api/setScale", {
+    await fetch("http://localhost:8080/api/simulation/setScale", {
       method: "POST",
-      body: JSON.stringify({ value }),
+      body: value,
     });
   }
 
   async function pause() {
     setTimePaused(true);
-    await fetch("http://localhost:8080/api/pause", { method: "POST" });
+    await fetch("http://localhost:8080/api/simulation/stop", { method: "POST" });
 }
 
 async function play() {
     setTimePaused(false);
-    await fetch("http://localhost:8080/api/play", { method: "POST" });
+    await fetch("http://localhost:8080/api/simulation/start", { method: "POST" });
   }
 
   return (
