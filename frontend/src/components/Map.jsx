@@ -13,13 +13,22 @@ export default function Map() {
   const leafletMapRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [timePaused, setTimePaused] = useState(false);
-
   // const dummyStations = [
   //   { lat: 40.4406, lon: -79.9959, type: "F", capacity: 10, id: 100 },
   //   { lat: 40.4606, lon: -79.97, type: "P", capacity: 5, id: 101 },
   //   { lat: 40.42, lon: -80.03, type: "H", capacity: 2, id: 102 },
   // ];
   const [stations, setStations] = useState([]);
+
+  useEffect(() => {
+    const combined = [
+      ...policeStations.map((s) => ({ ...s, type: "p" })),
+      ...fireStations.map((s) => ({ ...s, type: "f" })),
+      ...hospitals.map((s) => ({ ...s, type: "a" })),
+    ];
+    setStations(combined);
+  }, [policeStations, fireStations, hospitals]);
+
   const [disasters, setDisasters] = useState([]);
   const [movingUnits, setMovingUnits] = useState([]);
 
@@ -30,7 +39,7 @@ export default function Map() {
   useEffect(() => {
     if (mapRef.current && !leafletMapRef.current) {
       const leafletMap = L.map(mapRef.current, {
-        center: [40.4406, -79.9959], // Pittsburgh
+        center: [40.4406, -79.9959], // TODO: Initalize center based on city
         zoom: 13,
         minZoom: 13,
       });
@@ -43,6 +52,7 @@ export default function Map() {
       ).addTo(leafletMap);
 
       // Set bounds and lock pan outside
+      // TODO: Set bounds based on city
       leafletMap.setMaxBounds([
         [40.3, -80.1],
         [40.55, -79.85],
