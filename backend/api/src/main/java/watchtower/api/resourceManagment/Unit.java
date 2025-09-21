@@ -9,7 +9,7 @@ public class Unit {
     private Location currentLocation;
 
     public Unit(String type, Station home, int id) {
-        if (type.equals("f") || type.equals("p") || type.equals("a")) {
+        if (!(type.equals("f") || type.equals("p") || type.equals("a"))) {
             throw new RuntimeException();
         }
         this.id = type + String.format("%07d", id);
