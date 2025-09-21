@@ -1,7 +1,5 @@
 package watchtower.api.resourceManagment;
 
-import java.util.ArrayList;
-
 public class Disaster extends Location {
     private String type;
     private int severity;

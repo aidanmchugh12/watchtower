@@ -1,7 +1,7 @@
 package watchtower.api.resourceManagment;
 
-import java.util.*;
-import java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy;
+import java.util.ArrayList;
+import java.util.List;
 
 // Singleton class, there will only ever be a single instance
 public class Scene {
@@ -18,6 +18,7 @@ public class Scene {
         for (Station s : stations) {
             for (int i = 0; i <= s.capacity; i++) {
                 Unit u = new Unit(s.getType(), s, unitId);
+                s.arriveUnit(u);
                 unitId++;
             }
         }
