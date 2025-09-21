@@ -11,9 +11,16 @@ public class Scene {
     private List<Unit> movingUnits;
     private long currentTick;
 
-    private Scene(List<Station> allStations) {
+    public Scene(List<Station> allStations) {
+        int unitId = 1;
         currentTick = 0;
         stations = allStations;
+        for (Station s : stations) {
+            for (int i = 0; i <= s.capacity; i++) {
+                Unit u = new Unit(s.getType(), s, unitId);
+                unitId++;
+            }
+        }
         disasters = new ArrayList<Disaster>();
         movingUnits = new ArrayList<Unit>();
     }
@@ -23,6 +30,7 @@ public class Scene {
     }
 
     public void tick() {
+        // tick all units in motion
         for (Unit u : movingUnits) {
             if (u.tickAndCheckIfArrived()) {
                 // let the location know that the unit arrived
@@ -31,6 +39,28 @@ public class Scene {
                 movingUnits.remove(u);
             }
         }
+
+        // tick all disasters
+        ArrayList<Disaster> disastersToRemove = new ArrayList<Disaster>();
+        for (Disaster d : disasters) {
+            if (d.tickAndCheckIfOver()) {
+                // release all units
+                for (Unit u : d.getAllUnits()) {
+                    d.releaseUnit(u.getId());
+                    u.sendTo(u.getHome());
+                    movingUnits.add(u);
+                }
+
+                // mark disaster for removal
+                disastersToRemove.add(d);
+            }
+        }
+        for (Disaster disaster : disastersToRemove) {
+            // remove from the list
+            disasters.remove(disaster);
+        }
+
+        // increment current tick
         currentTick++;
     }
 

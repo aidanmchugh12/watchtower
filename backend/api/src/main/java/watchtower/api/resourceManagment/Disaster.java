@@ -5,13 +5,20 @@ import java.util.ArrayList;
 public class Disaster extends Location {
     private String type;
     private int severity;
+    private int ticksLeft;
 
-    public Disaster(double lat, double lon, String type, int id, int severity) {
+    public Disaster(double lat, double lon, String type, int id, int severity, int duration) {
         super.lat = lat;
         super.lon = lon;
         super.id = type + String.format("%07d", id);
         this.type = type;
         this.severity = severity;
+        this.ticksLeft = duration;
+    }
+
+    public boolean tickAndCheckIfOver() {
+        ticksLeft--;
+        return ticksLeft <= 0;
     }
 
     public int increaseSeverityLevel() {
