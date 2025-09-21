@@ -5,6 +5,7 @@ import "./style.css";
 import { useLocation } from "react-router-dom";
 import { useAppContext } from "./AppContext";
 import Log from "./Log";
+import Resources from "./Resources";
 
 export default function Map() {
   const mapRef = useRef(null);
@@ -31,9 +32,6 @@ export default function Map() {
 
   const [disasters, setDisasters] = useState([]);
   const [movingUnits, setMovingUnits] = useState([]);
-
-  const totalCapacity = (stations) =>
-    stations.reduce((sum, station) => sum + (station.capacity || 0), 0);
 
   // Initialize map only once
   useEffect(() => {
@@ -212,47 +210,15 @@ export default function Map() {
       <div id="map" ref={mapRef} style={{ height: "100vh", width: "100%" }} />
 
       {/* Resource Box */}
-      <div className="map-box top-left">
-        <p className="centered">
-          <strong>Resources</strong>
-        </p>
-        <p>Police Cars: {totalCapacity(policeStations)}</p>
-        <div className="progress-bar">
-          <div className="progress-section section-1">5</div>
-          <div className="progress-section section-2">3</div>
-          <div className="progress-section section-3">2</div>
-        </div>
-        <p>Fire Trucks: {totalCapacity(fireStations)}</p>
-        <div className="progress-bar">
-          <div className="progress-section section-1">2</div>
-          <div className="progress-section section-2">7</div>
-          <div className="progress-section section-3">1</div>
-        </div>
-        <p>Ambulances: {totalCapacity(hospitals)}</p>
-        <div className="progress-bar">
-          <div className="progress-section section-1">2</div>
-          <div className="progress-section section-2">6</div>
-          <div className="progress-section section-3">2</div>
-        </div>
-      </div>
+      <Resources policeStations={policeStations}
+        fireStations={fireStations}
+        hospitals={hospitals}>
+      </Resources>
 
       {/* Log Box */}
       <div className="map-box top-right">
         <Log
-          logs={[
-            "this is a dummy log statement with no real contents",
-            "this is a dummy log statement with no real contents",
-            "it is 9:00 pm est. the sun has set",
-            "success: fire has been put out",
-            "this is a dummy log statement with no real contents",
-            "notice: units have arrived at scene of emergency",
-            "this is a dummy log statement with no real contents of any sort at all",
-            "this is a dummy log statement with no real contents",
-            "this is a dummy log statement with no real contents of any sort at all",
-            "this is a dummy log statement with no real contents of any sort at all",
-            "DISASTER: NEW FIRE OF SEVERITY LEVEL 5",
-            "this is a dummy log statement with no real contents",
-          ]}
+          logs={[]}
         ></Log>
         <button onClick={() => setShowModal(true)}>Open</button>
       </div>

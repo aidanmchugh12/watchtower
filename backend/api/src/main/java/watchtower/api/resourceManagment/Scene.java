@@ -1,10 +1,10 @@
 package watchtower.api.resourceManagment;
+
 import watchtower.api.Log;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 
 // Singleton class, there will only ever be a single instance
 public class Scene {
@@ -44,7 +44,6 @@ public class Scene {
             }
         }
 
-
         // tick all disasters
         ArrayList<Disaster> disastersToRemove = new ArrayList<Disaster>();
         for (Disaster d : disasters) {
@@ -61,6 +60,13 @@ public class Scene {
             }
         }
         for (Disaster disaster : disastersToRemove) {
+
+            // check if unit is en route to disaster getting removed
+            for (Unit u : movingUnits) {
+                if (u.getDest().equals(disaster)) {
+                    u.sendTo(u.getHome());
+                }
+            }
             // remove from the list
             Log.log("success: disaster " + disaster.getId() + " has ended");
             disasters.remove(disaster);
@@ -97,7 +103,7 @@ public class Scene {
             if (s.getId().equals(stationId)) {
                 List<Unit> units = s.getUnits();
                 for (int i = 0; i < num; i++) {
-                    if (units.size() == 0) {
+                    if (units.size() == 0 || dest == null) {
                         return;
                     }
                     // pop from the list and send away

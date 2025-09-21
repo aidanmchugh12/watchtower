@@ -52,4 +52,28 @@ public class ApiClasses {
             this.destId = destId;
         }
     }
+
+    public static class ResourceSummary {
+        public int fireTrucksAvailable;
+        public int policeCarsAvailable;
+        public int ambulancesAvailable;
+        public int fireTrucksEnRoute;
+        public int policeCarsEnRoute;
+        public int ambulancesEnRoute;
+        public int fireTrucksAtScene;
+        public int policeCarsAtScene;
+        public int ambulancesAtScene;
+
+        public ResourceSummary() {
+            fireTrucksAvailable = 0;
+            policeCarsAvailable = 0;
+            ambulancesAvailable = 0;
+            fireTrucksEnRoute = 0;
+            policeCarsEnRoute = 0;
+            ambulancesEnRoute = 0;
+            fireTrucksAtScene = 0;
+            policeCarsAtScene = 0;
+            ambulancesAtScene = 0;
+        }
+    }
 }
