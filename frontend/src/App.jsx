@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react";
+import Map from "./components/Map";
 
 export default function App() {
   return (
-    <div style={{fontFamily: 'sans-serif', padding: 24}}>
-      <h1>Watchtower Frontend</h1>
-      <p>Frontend running.</p>
+    <div>
+      <Map />
     </div>
-  )
+  );
 }
