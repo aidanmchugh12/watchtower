@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Disaster Page</title>
+  <title>Watchtower Home Page</title>
   <style>
     html,
     body {
@@ -41,9 +41,16 @@
       letter-spacing: 3px;
     }
 
+    .headingPage p {
+      margin: 5px 0 0 0;
+      text-shadow: 2px 2px 5px rgb(41, 18, 144);
+      font-size: 18px;
+      color: #ffffff;
+    }
+
     .selection-box {
       position: absolute;
-      top: 58%;
+      top: 60%;
       left: 50%;
       transform: translate(-50%, -50%);
       background-color: rgba(255, 255, 255, 0.9);
@@ -66,8 +73,6 @@
       text-shadow: 3px 3px 5px rgb(255, 255, 255);
       text-align: left;
       color: rgb(0, 0, 0);
-      font-size: large;
-      font-family: 'Courier New', Courier, monospace;
       margin-bottom: 0.3rem;
     }
 
@@ -88,18 +93,18 @@
       background-color: #f0f0f0;
     }
 
-    .disaster-selection {
+    .city-selection {
       display: flex;
-      align-items: left;
+      align-items: center;
       gap: 10px;
       margin-top: 75px;
-      margin-left: 10px;
+      margin-left: 0px;
     }
 
 
-    .disaster-selection h1 {
-      text-shadow: 3px 3px 5px rgb(222, 23, 23);
-      margin-left: -10px;
+    .city-selection h1 {
+      text-shadow: 3px 3px 5px rgb(17, 28, 103);
+      margin: 0;
     }
 
     select {
@@ -110,10 +115,10 @@
     }
 
 
-    .simulatePage button {
+    .nextPage button {
       position: absolute;
       cursor: pointer;
-      background-color: rgb(19, 49, 147);
+      background-color: rgb(36, 109, 36);
       box-shadow: none;
       height: 60px;
       width: 200px;
@@ -125,58 +130,46 @@
       border-radius: 5px;
       box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.936);
       font-weight: 300;
-      color: #ffffff;
+      color: #ccc;
       font-size: 25px;
       text-shadow: 3px 3px 5px rgb(0, 0, 0);
     }
-
-    #time-slider {
-      position: fixed;
-      left: 20%;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 2;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      z-index: 1000;
-      width: 300px;
-    }
   </style>
-
+  <script type="module" src="/src/main.jsx"></script>
 </head>
 
 <body>
   <div class="headingPage">
     <div class="heading-content">
-      <h1 id="pageHeading">Disasters</h1>
+      <h1 id="pageHeading">Watchtower</h1>
+      <p>a disaster management tool</p>
     </div>
 
-    <div class="disaster-selection">
-      <h1> Select Disaster Randomness:</h1>
+    <div class="city-selection">
+      <h1> Select City:</h1>
+      <select id="city">
+        <option value="blank"> </option>
+        <option value="newyork">New York</option>
+        <option value="losangeles">Los Angeles</option>
+        <option value="pittsburgh">Pittsburgh</option>
+        <option value="dc">Washington D.C</option>
+      </select>
     </div>
 
     <div class="selection-box">
-      <div class="slider-row">
-        <label for="fire">Fire:</label>
-        <input type="range" id="fire" name="fire">
-      </div>
+      <p class="selection-text">Police Stations:</p>
+      <div class="results" id="police-results"></div>
 
-      <div class="slider-row">
-        <label for="flood">Flood:</label>
-        <input type="range" id="flood" name="flood">
-      </div>
+      <p class="selection-text">Fire Stations:</p>
+      <div class="results" id="fire-results"></div>
 
-      <div class="slider-row">
-        <label for="crime">Crime:</label>
-        <input type="range" id="crime" name="crime">
-      </div>
+      <p class="selection-text">Hospitals:</p>
+      <div class="results" id="hospital-results"></div>
     </div>
 
-    <div class="simulatePage">
-      <button class="simulateText">Simulate</button>
+    <div class="nextPage">
+      <button class="nextText">Next</button>
     </div>
-
-
 
 </body>
 
