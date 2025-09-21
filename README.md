@@ -12,13 +12,14 @@ An interactive web based platform that models disaster scenarios (fires, floods,
 - Interactive Map Interface
 - Resource Constraints & Statistics
 
-![demo](images/demo.png)
-![city](images/cityselect.png)
-![disaster](images/disasterselect.png)
-
 ## Tech Stack
 - React (JavaScript)
 - Spring Boot (Java)
 - Leaflet
 - OpenStreetMap -> Overpass API
 
+## Gallery
+
+![demo](images/demo.png)
+![city](images/cityselect.png)
+![disaster](images/disasterselect.png)
