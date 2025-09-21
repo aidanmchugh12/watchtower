@@ -1,5 +1,6 @@
 package watchtower.api.resourceManagment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Location {
@@ -13,6 +14,9 @@ public abstract class Location {
     }
 
     public void arriveUnit(Unit u) {
+        if (units == null) {
+            units = new ArrayList<Unit>();
+        }
         units.add(u);
         u.setCurrentLocation(this);
         u.sendTo(null);

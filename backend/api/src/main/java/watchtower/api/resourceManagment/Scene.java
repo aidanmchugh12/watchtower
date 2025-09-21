@@ -16,7 +16,7 @@ public class Scene {
         currentTick = 0;
         stations = allStations;
         for (Station s : stations) {
-            for (int i = 0; i <= s.capacity; i++) {
+            for (int i = 0; i < s.capacity; i++) {
                 Unit u = new Unit(s.getType(), s, unitId);
                 s.arriveUnit(u);
                 unitId++;
