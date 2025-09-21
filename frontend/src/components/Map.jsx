@@ -2,13 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./style.css";
+import { useLocation } from "react-router-dom";
+import { useAppContext } from "./AppContext";
 import Log from "./Log"
 
 export default function Map() {
   const mapRef = useRef(null); // div container
+  const location = useLocation();
+  const { policeStations, fireStations, hospitals } = useAppContext();
   const leafletMapRef = useRef(null); // store Leaflet map instance
   const [showModal, setShowModal] = useState(false);
   const [timePaused, setTimePaused] = useState(false);
+
 
   const dummyStations = [
     { lat: 40.4406, lon: -79.9959, type: "F", capacity: 10, id: 100 },
@@ -19,6 +24,8 @@ export default function Map() {
   const [unitData, setUnitData] = useState(null);
   const [allMovingUnits, setAllMovingUnits] = useState(null);
 
+  const totalCapacity = (stations) =>
+    stations.reduce((sum, station) => sum + (station.capacity || 0), 0);
   // Add method to populate stations
   // Add method to populate police cars, fire trucks, and ambulances
   // Add method to populate moving unit data
@@ -64,10 +71,9 @@ export default function Map() {
         L.marker([station.lat, station.lon], { icon })
           .addTo(leafletMap)
           .bindPopup(
-            `<b>${
-              station.type === "P"
-                ? "Police"
-                : station.type === "H"
+            `<b>${station.type === "P"
+              ? "Police"
+              : station.type === "H"
                 ? "Hospital"
                 : "Firehouse"
             }</b><br/>
@@ -89,19 +95,19 @@ export default function Map() {
         <p className="centered">
           <strong>Resources</strong>
         </p>
-        <p>Police Cars: 10</p>
+        <p>Police Cars: {totalCapacity(policeStations)}</p>
         <div className="progress-bar">
           <div className="progress-section section-1">5</div>
           <div className="progress-section section-2">3</div>
           <div className="progress-section section-3">2</div>
         </div>
-        <p>Fire Trucks: 10</p>
+        <p>Fire Trucks: {totalCapacity(fireStations)}</p>
         <div className="progress-bar">
           <div className="progress-section section-1">2</div>
           <div className="progress-section section-2">7</div>
           <div className="progress-section section-3">1</div>
         </div>
-        <p>Ambulances: 10</p>
+        <p>Ambulances: {totalCapacity(hospitals)}</p>
         <div className="progress-bar">
           <div className="progress-section section-1">2</div>
           <div className="progress-section section-2">6</div>
@@ -111,20 +117,20 @@ export default function Map() {
 
       {/* Log Box */}
       <div className="map-box top-right">
-          <Log logs={[
-            "this is a dummy log statement with no real contents",
-            "this is a dummy log statement with no real contents",
-            "it is 9:00 pm est. the sun has set",
-            "success: fire has been put out",
-            "this is a dummy log statement with no real contents",
-            "notice: units have arrived at scene of emergency",
-            "this is a dummy log statement with no real contents of any sort at all",
-            "this is a dummy log statement with no real contents",
-            "this is a dummy log statement with no real contents of any sort at all",
-            "this is a dummy log statement with no real contents of any sort at all",
-            "DISASTER: NEW FIRE OF SEVERITY LEVEL 5",
-            "this is a dummy log statement with no real contents",
-          ]}></Log>
+        <Log logs={[
+          "this is a dummy log statement with no real contents",
+          "this is a dummy log statement with no real contents",
+          "it is 9:00 pm est. the sun has set",
+          "success: fire has been put out",
+          "this is a dummy log statement with no real contents",
+          "notice: units have arrived at scene of emergency",
+          "this is a dummy log statement with no real contents of any sort at all",
+          "this is a dummy log statement with no real contents",
+          "this is a dummy log statement with no real contents of any sort at all",
+          "this is a dummy log statement with no real contents of any sort at all",
+          "DISASTER: NEW FIRE OF SEVERITY LEVEL 5",
+          "this is a dummy log statement with no real contents",
+        ]}></Log>
         <button onClick={() => setShowModal(true)}>Open</button>
       </div>
 
@@ -166,9 +172,8 @@ export default function Map() {
       {/* Time Controls */}
       <div className="time-controls">
         <button
-          className={`control-button pause-button ${
-            timePaused ? "disabled" : ""
-          }`}
+          className={`control-button pause-button ${timePaused ? "disabled" : ""
+            }`}
           onClick={() => setTimePaused(true)}
         >
           ⏸
@@ -180,9 +185,8 @@ export default function Map() {
         </div>
 
         <button
-          className={`control-button resume-button ${
-            !timePaused ? "disabled" : ""
-          }`}
+          className={`control-button resume-button ${!timePaused ? "disabled" : ""
+            }`}
           onClick={() => setTimePaused(false)}
         >
           ▶
