@@ -1,5 +1,7 @@
 package watchtower.api.resourceManagment;
 
+import java.util.ArrayList;
+
 public class Disaster extends Location {
     private String type;
     private int severity;
@@ -9,6 +11,7 @@ public class Disaster extends Location {
         super.lat = lat;
         super.lon = lon;
         super.id = type + String.format("%07d", id);
+        super.units = new ArrayList<Unit>();
         this.type = type;
         this.severity = severity;
         this.ticksLeft = duration;
