@@ -72,7 +72,7 @@ public class Scene {
             disasters.remove(disaster);
         }
 
-        if (currentTick % 50 == 0) {
+        if (currentTick % 10 == 0) {
             if (Math.random() > 0.75) {
                 double typeval = Math.random();
                 String type;
@@ -86,11 +86,14 @@ public class Scene {
                 int severity = (int) Math.ceil(Math.random() * 5);
                 int duration = (int) Math.ceil(Math.random() * 500);
 
-                double lat = 40.44 + 0.3 * (Math.random() - 0.5);
-                double lon = -79.99 + 0.3 * (Math.random() - 0.5);
+                double lat = 40.44 + 0.1 * (Math.random() - 0.5);
+                double lon = -79.99 + 0.1 * (Math.random() - 0.5);
 
                 Disaster d = new Disaster(lat, lon, type, (int) currentTick, severity, duration);
                 addDisaster(d);
+                DecisionAlgorithm dAlgo = new DecisionAlgorithm();
+                List<Unit> unitsToMove = dAlgo.CreateDecision(d);
+                allocateFromAlgorithm(unitsToMove, d);
             }
         }
 

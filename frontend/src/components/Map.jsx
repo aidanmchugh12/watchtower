@@ -110,7 +110,7 @@ export default function Map() {
     );
 
     eventSource.onmessage = (e) => {
-      console.log("SSE received:", e.data);
+      //console.log("SSE received:", e.data);
       try {
         const data = JSON.parse(e.data);
         setStations(data.stations || []);
@@ -124,7 +124,6 @@ export default function Map() {
 
     eventSource.onerror = (err) => {
       console.error("SSE error:", err);
-      eventSource.close();
     };
 
     return () => {
@@ -205,7 +204,7 @@ export default function Map() {
   useEffect(() => {
     if (!leafletMapRef.current) return;
 
-    console.log("Rendering moving units:", movingUnits);
+    //console.log("Rendering moving units:", movingUnits);
 
     if (leafletMapRef.current._movingUnitsLayer) {
       leafletMapRef.current.removeLayer(
@@ -216,7 +215,7 @@ export default function Map() {
     const unitLayer = L.layerGroup();
 
     movingUnits.forEach((unit) => {
-      console.log("Unit coords:", unit.lat, unit.lon);
+      //console.log("Unit coords:", unit.lat, unit.lon);
 
       let color;
       switch (unit.type?.toLowerCase()) {
