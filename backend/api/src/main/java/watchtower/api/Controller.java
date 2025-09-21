@@ -18,7 +18,6 @@ import watchtower.api.ApiClasses.*;
 public class Controller {
     Scene s;
     private int disasterCounter = 1;
-    private final SimulationService simulationService = new SimulationService();
 
     @GetMapping("/api/hello")
     public String hello() {
@@ -82,30 +81,5 @@ public class Controller {
         s.allocateFromMoving(entity.unitId, dest);
         return "Successfully allocated unit " + entity.unitId + " to disaster "
                 + dest.getId();
-    }
-
-    /* SIMULATION CONTROLLER ENDPOINTS */
-
-    @PostMapping("/api/simulation/start")
-    public String startSimulation() {
-        simulationService.startSimulation();
-        return "Simulation started!";
-    }
-
-    @PostMapping("/api/simulation/stop")
-    public String stopSimulation() {
-        simulationService.stopSimulation();
-        return "Simulation stopped!";
-    }
-
-    @GetMapping("/api/simulation/status")
-    public String getSimulationStatus() {
-        return simulationService.isRunning() + " " + simulationService.getTickCount();
-    }
-
-    @PostMapping("/api/simulation/reset")
-    public String resetSimulationService() {
-        simulationService.resetTickCount();
-        return "Ticket count reset!";
     }
 }

@@ -1,35 +1,39 @@
 package watchtower.api;
 
 import org.springframework.stereotype.Service;
-import java.util.concurrent.*;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import watchtower.api.resourceManagment.Scene;
 
 @Service
 public class SimulationService {
+
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-    private ScheduledFuture<?> simulationTask;
     private boolean running = false;
     private int tickCount = 0;
 
+    // Start simulation ticks
     public synchronized void startSimulation() {
-        if(running) return;
-
+        if (running) return;
         running = true;
 
-        simulationTask = scheduler.scheduleAtFixedRate(() -> {
+        scheduler.scheduleAtFixedRate(() -> {
             tick();
-        }, 0, 1, TimeUnit.SECONDS);
+        }, 0, 1, TimeUnit.SECONDS); // update every second
     }
 
+    // Stop simulation ticks
     public synchronized void stopSimulation() {
-        if(!running) return;
-        simulationTask.cancel(false);
         running = false;
     }
 
-    private void tick() {
+    // Increment tick count and run your simulation logic
+    private synchronized void tick() {
         tickCount++;
-        // OBJECT LOGIC HERE
-        System.out.println("Tick" + tickCount);
+        System.out.println("Tick: " + tickCount);
+        // TODO: ADD TICK FUNCTION CALL
     }
 
     public synchronized int getTickCount() {
@@ -40,7 +44,7 @@ public class SimulationService {
         tickCount = 0;
     }
 
-    public boolean isRunning() {
+    public synchronized boolean isRunning() {
         return running;
     }
 }

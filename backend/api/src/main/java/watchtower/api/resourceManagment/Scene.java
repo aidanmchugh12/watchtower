@@ -6,10 +6,10 @@ import java.util.List;
 // Singleton class, there will only ever be a single instance
 public class Scene {
     private static Scene singletonInstance = null;
-    private List<Station> stations;
-    private List<Disaster> disasters;
-    private List<Unit> movingUnits;
-    private long currentTick;
+    private static List<Station> stations;
+    private static List<Disaster> disasters;
+    private static List<Unit> movingUnits;
+    private static long currentTick;
 
     public Scene(List<Station> allStations) {
         int unitId = 1;
