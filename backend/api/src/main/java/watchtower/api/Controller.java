@@ -15,6 +15,8 @@ import watchtower.api.resourceManagment.Station;
 public class Controller {
     Scene s;
 
+    private final SimulationService simulationService = new SimulationService();
+
     @GetMapping("/api/hello")
     public String hello() {
         return "Hello from Watchtower!";
@@ -29,4 +31,29 @@ public class Controller {
         return "yippee\n" + entity[0].id;
     }
 
+    /* SIMULATION CONTROLLER ENDPOINTS */
+
+    @PostMapping("/api/simulation/start")
+    public String startSimulation() {
+        simulationService.startSimulation();
+        return "Simulation started!";
+    }
+
+    @PostMapping("/api/simulation/stop")
+    public String stopSimulation() {
+        simulationService.stopSimulation();
+        return "Simulation stopped!";
+    }
+
+    @GetMapping("/api/simulation/status") 
+    public String getSimulationStatus() {
+        return simulationService.isRunning() + " " + simulationService.getTickCount();
+    }
+
+    @PostMapping("/api/simulation/reset") 
+    public String resetSimulationService() {
+        simulationService.resetTickCount();
+        return "Ticket count reset!";
+    }
+    
 }
