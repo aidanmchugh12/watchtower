@@ -1,5 +1,9 @@
-# Watchtower (SteelHacks XII)
-## A "real time" disaster response simulator
+# Watchtower
+
+### A "real time" disaster response simulator
+
+### 1ST PLACE: Civics & Accessibility track at Steelhacks XII
+
 ### Made by Aidan McHugh, James Toscano, & Noah Knishkowy
 
 ## Description
